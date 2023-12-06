@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta</title>
+</head>
+<body>
+    <h2>Criar Conta</h2>
+    <form method="post" action="{% url 'criar_conta' %}">
+        {% csrf_token %}
+        {{ form.username.label_tag }} {{ form.username }}
+        <br>
+
+        {{ form.password1.label_tag }} {{ form.password1 }}
+        <br>
+
+        {{ form.password2.label_tag }} {{ form.password2 }}
+        <br>
+
+        {{ form.email.label_tag }} {{ form.email }}
+        <br>
+        
+        {{ form.name.label_tag }} {{ form.name }}
+        <button type="submit">Criar Conta</button>
+    </form>
+    <p>Já tem uma conta? <a href="{% url 'login' %}">Faça login</a></p>
+    {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+    {% endif %}
+</body>
+</html>

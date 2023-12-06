@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'fast',
+    'app_autenticacao',
 ]
 
 MIDDLEWARE = [
@@ -123,4 +124,12 @@ STATIC_URL = '/static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
+AUTH_USER_MODEL = 'app_autenticacao.Usuario'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'projetodjango7@gmail.com'
+EMAIL_HOST_PASSWORD = 'dngz qmfy bzrz tpgd'
+DEFAULT_FROM_EMAIL = 'projetodjango7@gmail.com'
