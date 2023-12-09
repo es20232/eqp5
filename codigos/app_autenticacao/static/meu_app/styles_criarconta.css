@@ -1,0 +1,69 @@
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #4852c451;
+    margin: 0;
+    padding: 0;
+}
+
+.signup-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.signup-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 50px;
+}
+
+.instagram-logo {
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.signup-form input {
+    padding: 12px;
+    height: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: #3897f0;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.messages {
+    list-style: none;
+    padding: 0;
+}
+
+.messages li {
+    margin-bottom: 10px;
+}

@@ -1,0 +1,59 @@
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #4852c451;
+    margin: 0;
+    padding: 0;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 50px;
+    height: 500px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form input {
+    margin-bottom: 10px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+}
+
+.btn-primary {
+    background-color: #3897f0;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.messages {
+    list-style: none;
+    padding: 0;
+}
+
+.messages li {
+    margin-bottom: 10px;
+}
