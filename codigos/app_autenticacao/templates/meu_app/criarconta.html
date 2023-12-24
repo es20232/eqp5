@@ -5,13 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar Conta</title>
+    <title>Cadastre-se</title>
     <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_criarconta.css' %}">
 </head>
 <body class="signup-body">
 
     <div class="signup-container">
-        <img src="{% static 'meu_app/instagram-logo.png' %}" alt="Instagram" class="instagram-logo">
+        <img src="{% static 'meu_app/instagram-logo.png' %}" alt="Fast Post" class="fast-logo">
 
         <form method="post" action="{% url 'criar_conta' %}" class="signup-form">
             {% csrf_token %}

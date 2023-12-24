@@ -22,6 +22,8 @@
         </form>
 
         <p class="signup-link">Não tem uma conta? <a href="{% url 'criar_conta' %}">Criar conta</a></p>
+        
+        <p class="forgot-password-link"><a href="{% url 'iniciar_redefinir_senha' %}"> Esqueceu sua senha?</a></p>
 
         {% if messages %}
             <ul class="messages">

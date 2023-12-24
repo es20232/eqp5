@@ -7,6 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 class UsuarioCreationForm(UserCreationForm):
     name = forms.CharField(max_length=30, required=True, help_text='Obrigatório.')
     email = forms.EmailField(max_length=254, required=True, help_text='Obrigatório. Informe um endereço de e-mail válido.')
+    
 
     class Meta:
         model = Usuario
@@ -16,5 +17,7 @@ class UsuarioLoginForm(AuthenticationForm):
     class Meta:
         model = Usuario
         fields = ['username', 'password']
+
+
 
     
