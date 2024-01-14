@@ -4,27 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redefinir Senha</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-    <h2>Redefinir Senha</h2> 
-    <form method="post" action="{% url 'redefinir_senha' token %}">
-        {% csrf_token %}
-        <div>
-            <label for="nova_senha">Nova Senha:</label>
-            <input type="password" name="nova_senha" id="nova_senha" required>
+    <div class="container">
+        <div class="content">
+            <div id="redefinir_senha">
+                <form method="post" action="{% url 'redefinir_senha' token %}">
+                    <!-- {% csrf_token %} -->
+                        <h2>Redefinir Senha</h2>
+
+                        <h4>Crie uma senha forte</h4>
+                        <h5>A senha precisa ter pelo menos 6 caracteres e incluir uma combinação de números, letras e caracteres especiais (!$@％).</h5>
+                        <br><label for="nova_senha">Nova Senha:</label>
+                        <p>
+                            <input type="password" name="nova_senha" id="nova_senha" required>
+                        </p>
+                        
+                        <label for="confirmar_senha">Confirmar Nova Senha:</label>
+                        <p>
+                            <input type="password" name="confirmar_senha" id="confirmar_senha" required>
+                        </p>
+                        
+                        <p>
+                            <input type="submit" value="Salvar" />
+                        </p>
+                        <!--{% if messages %} -->
+                        <div>
+                            <!--{% for message in messages %} -->
+                                <p style="color: white;">{{ message }}</p>
+                            <!--{% endfor %} -->
+                        </div>
+                        <!--{% endif %} -->
+                </form>
+            </div>
         </div>
-        <div>
-            <label for="confirmar_senha">Confirmar Nova Senha:</label>
-            <input type="password" name="confirmar_senha" id="confirmar_senha" required>
-        </div> 
-        <button type="submit">Redefinir Senha</button>
-        {% if messages %}
-        <div>
-            {% for message in messages %}
-                <p style="color: white;">{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-    </form>
+    </div>
 </body>
 </html>
