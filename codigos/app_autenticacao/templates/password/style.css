@@ -113,7 +113,7 @@ input[type="submit"]{
   transition: all 0.2s linear;
 }
  
-/*estilo do botão submit no hover */
+/*Estilo do botão submit no hover */
 input[type="submit"]:hover{
   background: #4ab3c6;
 }

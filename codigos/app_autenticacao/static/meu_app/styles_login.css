@@ -56,7 +56,7 @@ label{
 /* Estilizando o texto padrão do input */
 input:not([type="submit"])::placeholder {
     color: #999; /* Cor do texto do placeholder */
-    font-style: italic; /* Estilo da fonte do placeholder (opcional) */
+    font-style: italic; /*Estilo da fonte do placeholder (opcional) */
 }
 
 /* Estilizando o input */
