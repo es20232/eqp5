@@ -11,7 +11,7 @@
         <div class="content">
             <div id="redefinir_senha">
                 <form method="post" action="{% url 'redefinir_senha' token %}">
-                    <!-- {% csrf_token %} -->
+                        {% csrf_token %} 
                         <h2>Redefinir Senha</h2>
 
                         <h4>Crie uma senha forte</h4>
@@ -29,13 +29,13 @@
                         <p>
                             <input type="submit" value="Salvar" />
                         </p>
-                        <!--{% if messages %} -->
+                        {% if messages %}
                         <div>
-                            <!--{% for message in messages %} -->
+                            {% for message in messages %}
                                 <p style="color: white;">{{ message }}</p>
-                            <!--{% endfor %} -->
+                            {% endfor %}
                         </div>
-                        <!--{% endif %} -->
+                        {% endif %}
                 </form>
             </div>
         </div>
