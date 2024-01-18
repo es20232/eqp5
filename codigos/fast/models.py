@@ -10,7 +10,8 @@ class ImagemForm(forms.ModelForm):
     class Meta:
         model = Imagem
         fields = [
-            'imagem',
+
+            'imagem', 
             'descricao'
         ]
 
