@@ -9,4 +9,6 @@ urlpatterns = [
     path('confirmar-conta/', views.confirmar_conta, name='confirmar_conta'),
     path('iniciar-redefinir-senha/', views.iniciar_redefinir_senha, name='iniciar_redefinir_senha'),
     path('redefinir-senha/<str:token>/', views.redefinir_senha, name='redefinir_senha'),
+    path('perfil/', views.profile_view, name='perfil'),  # 
 ]
+

@@ -1,3 +1,4 @@
+#fast>models.py
 from django.db import models
 from django import forms
 
@@ -9,10 +10,9 @@ class ImagemForm(forms.ModelForm):
     class Meta:
         model = Imagem
         fields = [
-            'Imagem',
+            'imagem',
             'descricao'
         ]
-
 
 
 

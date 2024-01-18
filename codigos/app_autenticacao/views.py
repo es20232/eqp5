@@ -13,6 +13,13 @@ from django.urls import reverse
 def dashboard_view(request):
     return render(request, 'meu_app/dashboard.html', {'usuario': request.user})
 
+
+@login_required
+def profile_view(request):
+    return render(request, 'meu_app/perfil.html', {'usuario':request.user})
+
+
+
 def login_view(request):
     if request.method == 'POST':
         form = UsuarioLoginForm(data=request.POST)
