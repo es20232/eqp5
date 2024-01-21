@@ -1,41 +1,37 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redefinir Senha</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_redefinirsenha.css' %}">
 </head>
 <body>
     <div class="container">
         <div class="content">
             <div id="redefinir_senha">
                 <form method="post" action="{% url 'redefinir_senha' token %}">
-                        {% csrf_token %} 
-                        <h2>Redefinir Senha</h2>
+                    {% csrf_token %} 
+                    <h2>Redefinir Senha</h2>
+                    <h5>A senha precisa ter pelo menos 6 caracteres e incluir uma combinação de números e letras.</h5>
+                    <br><label for="nova_senha">Nova Senha:</label>
+                    <p>
+                        <input type="password" name="nova_senha" id="nova_senha" required>
+                    </p>
+                    
+                    <label for="confirmar_senha">Confirmar Nova Senha:</label>
+                    <p>
+                        <input type="password" name="confirmar_senha" id="confirmar_senha" required>
+                    </p>
 
-                        <h4>Crie uma senha forte</h4>
-                        <h5>A senha precisa ter pelo menos 6 caracteres e incluir uma combinação de números, letras e caracteres especiais (!$@％).</h5>
-                        <br><label for="nova_senha">Nova Senha:</label>
-                        <p>
-                            <input type="password" name="nova_senha" id="nova_senha" required>
-                        </p>
-                        
-                        <label for="confirmar_senha">Confirmar Nova Senha:</label>
-                        <p>
-                            <input type="password" name="confirmar_senha" id="confirmar_senha" required>
-                        </p>
-                        
-                        <p>
-                            <input type="submit" value="Salvar" />
-                        </p>
-                        {% if messages %}
-                        <div>
-                            {% for message in messages %}
-                                <p style="color: white;">{{ message }}</p>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
+                    {% for message in messages %}
+                        <p style="color: #066a75;">{{ message }}</p>
+                    {% endfor %}
+
+                    <p>
+                        <input type="submit" value="Salvar" />
+                    </p>
                 </form>
             </div>
         </div>

@@ -13,12 +13,9 @@ from django.urls import reverse
 def dashboard_view(request):
     return render(request, 'meu_app/dashboard.html', {'usuario': request.user})
 
-
 @login_required
 def profile_view(request):
     return render(request, 'meu_app/perfil.html', {'usuario':request.user})
-
-
 
 def login_view(request):
     if request.method == 'POST':
@@ -97,6 +94,8 @@ def iniciar_redefinir_senha(request):
             return redirect('iniciar_redefinir_senha')
     return render(request, 'password/iniciar_redefinir_senha.html')
 
+from django.contrib.auth.hashers import check_password
+
 def redefinir_senha(request, token):
     if request.method == 'POST':
         nova_senha = request.POST.get('nova_senha')
@@ -104,12 +103,16 @@ def redefinir_senha(request, token):
         if nova_senha == confirmar_senha:
             token_redefinir = PasswordResetToken.objects.get(token=token)
             user = token_redefinir.user
+            if user.check_password(nova_senha):
+                messages.error(request, 'A nova senha não pode ser igual à senha atual. Escolha uma senha diferente.')
+                return redirect('redefinir_senha', token=token)
             user.set_password(nova_senha)
             user.save()
             token_redefinir.delete()
             return render(request, 'password/senha_alterada.html')
         else:
             messages.error(request, 'As senhas não coincidem. Tente novamente.')
-            return redirect('redefinir_senha', {'token': token})
+            return redirect('redefinir_senha', token=token)
     return render(request, 'password/redefinir_senha.html', {'token': token})
+
 

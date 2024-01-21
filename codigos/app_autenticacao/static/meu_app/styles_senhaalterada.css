@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.form-signin {
+    width: 40%;
+    margin: 10% auto;
+    background: #f7f7f7;
+    border: 1px solid rgba(147, 184, 189, 0.8);
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.form-signin p {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.form-signin a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+::-webkit-input-placeholder {
+    color: #bebcbc;
+    font-style: italic;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+    color: #bebcbc;
+    font-style: italic;
+}
+
+input {
+    outline: none;
+}
+
+input:not([type="checkbox"]) {
+    width: 95%;
+    margin-top: 4px;
+    padding: 10px;
+    border: 1px solid #b2b2b2;
+    border-radius: 3px;
+    box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+    transition: all 0.2s linear;
+}
+
+input[type="submit"] {
+    width: 100%;
+    cursor: pointer;
+    background: rgb(61, 157, 179);
+    padding: 8px 5px;
+    color: #fff;
+    font-size: 20px;
+    border: 1px solid #fff;
+    margin-bottom: 10px;
+    text-shadow: 0 1px 1px #333;
+    border-radius: 5px;
+    transition: all 0.2s linear;
+}
+
+input[type="submit"]:hover {
+    background: #4ab3c6;
+}

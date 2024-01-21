@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+h2 {
+    font-size: 28px;
+    color: #066a75;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    max-width: 400px;
+    width: 100%;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    color: #066a75;
+    display: block;
+    margin-bottom: 8px;
+}
+
+input {
+    width: 94%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #b2b2b2;
+    border-radius: 1px;
+}
+
+button {
+    width: 100%;
+    cursor: pointer;
+    background: rgb(61, 157, 179);
+    padding: 10px;
+    color: #fff;
+    font-size: 16px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #4ab3c6;
+}
+
+.messages {
+    list-style-type: none;
+    padding: 0;
+}
+
+.messages li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.messages.success li {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.messages.error li {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}

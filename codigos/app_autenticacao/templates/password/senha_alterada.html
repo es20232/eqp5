@@ -1,12 +1,15 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-    </head>
-    <body class="text-center" czshortcut-listen="true">
-        <main class="form-signin w-25 m-auto">
-            <p> Sua senha foi alterada. Você pode fazer login novamente.</p>
-            <p><a href="{% url 'login' %}">login</a></p>        
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_senhaalterada.css' %}">
+</head>
+<body class="text-center" czshortcut-listen="true">
+    <div class="main-container">
+        <main class="form-signin w-75 m-auto">
+            <p>Sua senha foi alterada. Você pode fazer login novamente.</p>
+            <p><a href="{% url 'login' %}">Login</a></p>        
         </main>
-    </body>
+    </div>
+</body>
 </html>

@@ -1,33 +1,36 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Redefinição de Senha</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_iniciarredefinicao.css' %}">
 </head>
-<body>
-    <h2>Iniciar Redefinição de Senha</h2>
+<body >
+    <div class="content">
+        <h2>Iniciar Redefinição de Senha</h2>
 
-    <form method="post" action="{% url 'iniciar_redefinir_senha' %}">
-        {% csrf_token %}
-        <label for="email">Email:</label>
-        <input type="email" name="email" required>
-        <div>
-            <button type="submit">Enviar Link de Redefinição</button>
-        </div>
-    </form>
+        <form method="post" action="{% url 'iniciar_redefinir_senha' %}">
+            {% csrf_token %}
+            <label for="email">Email:</label>
+            <input type="email" name="email" required>
+            <div>
+                <button type="submit">Enviar Link de Redefinição</button>
+            </div>
+        </form>
 
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
-    {% if messages and messages|length == 1 and 'error' in messages.0.tags %}
-        <p style="color: white;">{{ messages.0 }}</p>
-    {% endif %}
-
+        {% if messages and messages|length == 1 and 'error' in messages.0.tags %}
+            <p style="color: white;">{{ messages.0 }}</p>
+        {% endif %}
+    </div>
 </body>
 </html>
