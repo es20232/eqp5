@@ -10,7 +10,7 @@
 <body>
     <div class="profile-container">
         {% if usuario.avatar %}
-            <img class="avatar" src="{{ usuario.avatar.url }}" alt="Avatar">
+            <img class="avatar" src="{{ avatar_path }}" alt="Avatar">
         {% else %}
             <div class="avatar" style="background-color: #ddd; width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px;"></div>
         {% endif %}
@@ -19,7 +19,6 @@
             <button class="btn">Carregar Foto</button>
             <input type="file" name="avatar" id="avatar-input" accept="image/*">
         </div>
-
         <div class="username">{{ usuario.username }}</div>
         <p class="bio">{{ usuario.bio }}</p>
         <div class="additional-info">
@@ -30,8 +29,8 @@
 
     <script>
         document.getElementById('avatar-input').addEventListener('change', function(e) {
-            // Adicione aqui o código JavaScript para lidar com o upload da foto do perfil
-            console.log('Arquivo selecionado:', e.target.files[0]);
+            var avatarImg = document.querySelector('.avatar');
+            avatarImg.src = URL.createObjectURL(e.target.files[0]);
         });
     </script>
 </body>
