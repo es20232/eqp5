@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +10,10 @@
 <body class="signup-body">
 
     <div class="signup-container">
-        <img src="{% static 'meu_app/instagram-logo.png' %}" alt="Fast Post" class="fast-logo">
 
         <form method="post" action="{% url 'criar_conta' %}" class="signup-form">
             {% csrf_token %}
+            <h2>Cadastre-se</h2>
 
             <div class="form-group">
                 {{ form.username.label_tag }} {{ form.username }}
