@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload de Perfil</title>
+</head>
+<body>
+    <h2>Upload de Perfil</h2>
+    <form method="post" enctype="multipart/form-data" action="{% url 'upload_perfil' %}">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>

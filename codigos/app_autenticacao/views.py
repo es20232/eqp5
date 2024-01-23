@@ -18,14 +18,14 @@ def dashboard_view(request):
 @login_required
 def profile_view(request):
     if request.method == 'POST':
-        form = EditForm(request.POST, instance=request.user)
+        form = EditForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            update_session_auth_hash(request, request.user)  # Mantém a sessão autenticada após alterar a senha
-            return redirect('perfil')  # Redirecione para a página de perfil ou para onde preferir
+            update_session_auth_hash(request, request.user)
+            return redirect('perfil')
     else:
         form = EditForm(instance=request.user)
-    return render(request, 'meu_app/perfil.html', {'usuario': request.user})
+    return render(request, 'meu_app/perfil.html', {'usuario': request.user, 'form': form})
 
 def login_view(request):
     if request.method == 'POST':

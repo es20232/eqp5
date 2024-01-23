@@ -19,11 +19,13 @@ class UsuarioLoginForm(AuthenticationForm):
         model = Usuario
         fields = ['username', 'password']
 
+
+
 class EditForm(UserChangeForm):
+    photo = forms.ImageField(required=False, widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
+
     class Meta:
         model = Usuario
-        fields = ['username', 'email', 'bio']
-
-
+        fields = ['username', 'email', 'bio', 'photo']
 
     
