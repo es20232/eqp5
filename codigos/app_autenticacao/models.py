@@ -5,15 +5,14 @@ from django.contrib.auth.models import AbstractUser, User
 from django.conf import settings
 
 class Usuario(AbstractUser):
-    
+
+
     email = models.EmailField(unique=True)
-
     is_verified = models.BooleanField(default=False)
-
-
+    bio = models.TextField(blank=True)
     # adicionando campos novos
 
-    bio = models.TextField(blank=True)
+
     profile_picture = models.ImageField(upload_to="profile_imgs/", null=True, blank=True)
 
     def __str__(self):

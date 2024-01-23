@@ -1,37 +1,85 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_styles_perfil.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_perfil.css' %}">
 </head>
 <body>
     <div class="profile-container">
         {% if usuario.avatar %}
-            <img class="avatar" src="{{ usuario.avatar.url }}" alt="Avatar">
+            <img class="avatar" src="{{ avatar_path }}" alt="Avatar">
         {% else %}
             <div class="avatar" style="background-color: #ddd; width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px;"></div>
         {% endif %}
         
         <div class="upload-btn-wrapper">
-            <button class="btn">Carregar Foto</button>
+            <button class="btn">Carregar Foto </button>
             <input type="file" name="avatar" id="avatar-input" accept="image/*">
         </div>
-
         <div class="username">{{ usuario.username }}</div>
         <p class="bio">{{ usuario.bio }}</p>
         <div class="additional-info">
             <p>Email: {{ usuario.email }}</p>
             <!-- Adicione outras informações que desejar mostrar -->
         </div>
+        <button class="btn" id="editar-informacoes">Editar Informações</button>
+
+        <!-- Formulário de edição (inicialmente oculto) -->
+        <form id="form-editar-informacoes" method="post" style="display: none;">
+            <!-- Adicione os campos do formulário aqui -->
+            <h2>Editar Perfil</h2>
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <div class="additional-info">
+            <p><label for="name">Novo nome:</label></p>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="name" name="name">
+            </div>
+            
+            <div class="additional-info">
+                <p><label for="username">Novo usuário:</label></p>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="username" name="username">
+            </div>
+
+            <div class="additional-info">
+                <p><label for="email">Novo email:</label></p>
+            </div>
+
+            <div class="form-group">
+                <input type="email" id="email" name="email">
+            </div>
+
+            <div class="additional-info">
+                <p><label for="bio">Nova bio:</label></p>
+            </div>
+            
+            <div class="form-group">
+                <input type="bio" id="bio" name="bio">
+            </div>
+            <p><button type="submit">Salvar Alterações</button></p>
+            
+        </form>
     </div>
 
     <script>
         document.getElementById('avatar-input').addEventListener('change', function(e) {
-            // Adicione aqui o código JavaScript para lidar com o upload da foto do perfil
-            console.log('Arquivo selecionado:', e.target.files[0]);
+            var avatarImg = document.querySelector('.avatar');
+            avatarImg.src = URL.createObjectURL(e.target.files[0]);
+        });
+        // Adiciona um ouvinte de evento ao botão de editar informações
+        document.getElementById('editar-informacoes').addEventListener('click', function() {
+            // Mostra o formulário de edição e oculta o botão de editar
+            document.getElementById('form-editar-informacoes').style.display = 'block';
+            this.style.display = 'none';
         });
     </script>
 </body>

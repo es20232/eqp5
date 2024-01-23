@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Usuario, PasswordResetToken
-from .forms import UsuarioCreationForm, UsuarioLoginForm
+from .forms import EditForm, UsuarioCreationForm, UsuarioLoginForm
 import uuid
 from django.urls import reverse
+from django.contrib.auth.forms import PasswordChangeForm
 
 @login_required
 def dashboard_view(request):
@@ -15,7 +17,15 @@ def dashboard_view(request):
 
 @login_required
 def profile_view(request):
-    return render(request, 'meu_app/perfil.html', {'usuario':request.user})
+    if request.method == 'POST':
+        form = EditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, request.user)  # Mantém a sessão autenticada após alterar a senha
+            return redirect('perfil')  # Redirecione para a página de perfil ou para onde preferir
+    else:
+        form = EditForm(instance=request.user)
+    return render(request, 'meu_app/perfil.html', {'usuario': request.user})
 
 def login_view(request):
     if request.method == 'POST':
