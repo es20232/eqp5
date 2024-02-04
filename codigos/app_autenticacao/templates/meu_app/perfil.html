@@ -15,16 +15,11 @@
             <div class="avatar no-photo"></div>
         {% endif %}
         
-        <!-- Formulário de carregar foto -->
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Salvar Foto</button>
         </form>
-        
-        <div class="upload-btn-wrapper">
-            <button class="btn" id="carregar-foto-btn">Carregar Foto</button>
-        </div>
         
         <div class="username">{{ usuario.username }}</div>
         <p class="bio">{{ usuario.bio }}</p>
@@ -34,8 +29,6 @@
         </div>
         
         <button class="btn" id="editar-informacoes">Editar Informações</button>
-
-        <!-- Restante do seu código... -->
     </div>
 
     <script>
@@ -51,4 +44,4 @@
         });
     </script>
 </body>
-</html>
+</html>  

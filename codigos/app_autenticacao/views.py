@@ -9,7 +9,6 @@ from .models import Usuario, PasswordResetToken
 from .forms import EditForm, UsuarioCreationForm, UsuarioLoginForm
 import uuid
 from django.urls import reverse
-from django.contrib.auth.forms import PasswordChangeForm
 
 @login_required
 def dashboard_view(request):
@@ -26,6 +25,16 @@ def profile_view(request):
     else:
         form = EditForm(instance=request.user)
     return render(request, 'meu_app/perfil.html', {'usuario': request.user, 'form': form})
+
+@login_required
+def upload_perfil(request):
+    form = EditForm(instance=request.user)
+    if request.method == 'POST':
+        form = EditForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():  
+            form.save()
+            return redirect('perfil') 
+    return render(request, 'meu_app/upload_perfil.html', {'form': form})
 
 def login_view(request):
     if request.method == 'POST':

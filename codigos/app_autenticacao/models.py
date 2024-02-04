@@ -6,11 +6,9 @@ from django.conf import settings
 
 class Usuario(AbstractUser):
 
-
     email = models.EmailField(unique=True)
     is_verified = models.BooleanField(default=False)
     bio = models.TextField(blank=True)
-    # adicionando campos novos
 
 
     profile_picture = models.ImageField(upload_to="profile_imgs/", null=True, blank=True)
