@@ -26,6 +26,5 @@ class EditForm(UserChangeForm):
 
     class Meta:
         model = Usuario
-        fields = ['photo', 'username', 'email', 'bio' ]
+        fields = ['photo' ]
 
-    
