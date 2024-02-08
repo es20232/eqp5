@@ -14,24 +14,27 @@
         {% else %}
             <div class="avatar no-photo"></div>
         {% endif %}
-        
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Salvar Foto</button>
-        </form>
+
+        <div id="editarPerfilBtn" onclick="mostrarBotoes()">Editar Perfil</div>
+
+        <div id="botoesEditarPerfil" style="display: none;">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.photo }}
+                <button type="submit">Atualizar Foto</button>
+            </form>
+        </div>
         
         <div class="username">{{ usuario.username }}</div>
         <p class="bio">{{ usuario.bio }}</p>
         <div class="additional-info">
             <p>Email: {{ usuario.email }}</p>
-            <!-- Adicione outras informações que desejar mostrar -->
+            <!-- adicione informações que desejar mostrar na bio -->
         </div>
-        
-        <button class="btn" id="editar-informacoes">Editar Informações</button>
     </div>
 
     <script>
+
         // Adiciona um ouvinte de evento ao botão de carregar foto
         document.getElementById('carregar-foto-btn').addEventListener('click', function() {
             document.querySelector('form').style.display = 'block';
@@ -42,6 +45,17 @@
             document.getElementById('form-editar-informacoes').style.display = 'block';
             this.style.display = 'none';
         });
+
+        function mostrarBotoes() {
+            var botoesEditarPerfil = document.getElementById('botoesEditarPerfil');
+            
+            // Alterna a visibilidade dos botões
+            if (botoesEditarPerfil.style.display === 'none' || botoesEditarPerfil.style.display === '') {
+                botoesEditarPerfil.style.display = 'block';
+            } else {
+                botoesEditarPerfil.style.display = 'none';
+            }
+        }
     </script>
 </body>
-</html>  
+</html>

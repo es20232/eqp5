@@ -7,7 +7,7 @@
     <h2>Upload de Perfil</h2>
     <form method="post" enctype="multipart/form-data" action="{% url 'upload_perfil' %}">
         {% csrf_token %}
-        {{ form }}
+        {{ form.photo }}
         <button type="submit">Enviar</button>
     </form>
 </body>
