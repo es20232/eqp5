@@ -5,10 +5,11 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Usuario, PasswordResetToken
+from .models import Usuario, PasswordResetToken, Galeria
 from .forms import EditForm, UsuarioCreationForm, UsuarioLoginForm
 import uuid
 from django.urls import reverse
+from .forms import EditForm, GaleriaForm
 
 @login_required
 def dashboard_view(request):
@@ -16,15 +17,29 @@ def dashboard_view(request):
 
 @login_required
 def profile_view(request):
+    # dps fazer a parte pro usuario poder postar a foto dele q ta na galeria
+    posts = ...
+    fotos = Galeria.objects.filter(user=request.user) 
+    
     if request.method == 'POST':
         form = EditForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, request.user)
-            return redirect('perfil')
+
+        # Verifica se o formulário da galeria é submetido
+        form_galeria = GaleriaForm(request.POST, request.FILES)
+        if form_galeria.is_valid():
+            galeria_instancia = form_galeria.save(commit=False)
+            galeria_instancia.user = request.user
+            galeria_instancia.save()
+
+        return redirect('perfil')
     else:
         form = EditForm(instance=request.user)
-    return render(request, 'meu_app/perfil.html', {'usuario': request.user, 'form': form})
+        form_galeria = GaleriaForm()
+
+    return render(request, 'meu_app/perfil.html', {'usuario': request.user, 'form': form, 'form_galeria': form_galeria,'fotos': fotos, 'posts': posts})
 
 @login_required
 def upload_perfil(request):

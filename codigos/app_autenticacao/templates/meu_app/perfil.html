@@ -33,6 +33,27 @@
         </div>
     </div>
 
+    <!-- botoes galeria e posts -->
+    <div id="botoesGaleriaPosts">
+        <button onclick="mostrarGaleria()">Galeria</button>
+        <button onclick="mostrarPosts()">Posts</button>
+    </div>
+
+    <!-- conteudo da galeria e posts -->
+    <div id="conteudoGaleria" style="display: none;">
+        <h2>Galeria</h2>
+        <form method="post" enctype="multipart/form-data" action="{% url 'perfil' %}">
+            {% csrf_token %}
+            {{ form_galeria.foto }}
+            <button type="submit">Adicionar foto na Galeria</button>
+        </form>
+        {% for foto in fotos %}
+            {% if foto.foto %}
+                <img src="{{ foto.foto.url }}" alt="Foto">
+            {% endif %}
+        {% endfor %}
+    </div>
+
     <script>
 
         // Adiciona um ouvinte de evento ao botão de carregar foto
@@ -56,6 +77,23 @@
                 botoesEditarPerfil.style.display = 'none';
             }
         }
+
+        function mostrarGaleria() {
+            var conteudoGaleria = document.getElementById('conteudoGaleria');
+            var conteudoPosts = document.getElementById('conteudoPosts');
+
+            conteudoGaleria.style.display = 'block';
+            conteudoPosts.style.display = 'none';
+        }
+
+        function mostrarPosts() {
+            var conteudoGaleria = document.getElementById('conteudoGaleria');
+            var conteudoPosts = document.getElementById('conteudoPosts');
+
+            conteudoGaleria.style.display = 'none';
+            conteudoPosts.style.display = 'block';
+        }
+
     </script>
 </body>
 </html>
