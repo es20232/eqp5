@@ -1,15 +1,14 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Usuario, PasswordResetToken, Galeria
-from .forms import EditForm, UsuarioCreationForm, UsuarioLoginForm
+from .forms import EditForm, UsuarioCreationForm, UsuarioLoginForm, GaleriaForm
 import uuid
 from django.urls import reverse
-from .forms import EditForm, GaleriaForm
+from django.contrib.auth.forms import PasswordChangeForm
 
 @login_required
 def dashboard_view(request):
@@ -17,29 +16,36 @@ def dashboard_view(request):
 
 @login_required
 def profile_view(request):
-    # dps fazer a parte pro usuario poder postar a foto dele q ta na galeria
-    posts = ...
     fotos = Galeria.objects.filter(user=request.user) 
     
     if request.method == 'POST':
-        form = EditForm(request.POST, request.FILES, instance=request.user)
+        form = EditForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            update_session_auth_hash(request, request.user)
-
-        # Verifica se o formulário da galeria é submetido
-        form_galeria = GaleriaForm(request.POST, request.FILES)
-        if form_galeria.is_valid():
-            galeria_instancia = form_galeria.save(commit=False)
-            galeria_instancia.user = request.user
-            galeria_instancia.save()
-
-        return redirect('perfil')
+            messages.success(request, 'Dados atualizadas com sucesso.')
+            senha_form = PasswordChangeForm(request.user, request.POST)
+            if senha_form.is_valid():
+                senha_form.save()
+                update_session_auth_hash(request, request.user)
+            return redirect('perfil')
     else:
         form = EditForm(instance=request.user)
         form_galeria = GaleriaForm()
+    return render(request, 'meu_app/perfil.html', {'usuario': request.user, 'form': form, 'form_galeria': form_galeria, 'fotos': fotos, 'posts': posts})
 
-    return render(request, 'meu_app/perfil.html', {'usuario': request.user, 'form': form, 'form_galeria': form_galeria,'fotos': fotos, 'posts': posts})
+@login_required
+def editar_conta(request):
+    if request.method == 'POST':
+        form = EditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Suas informações foram atualizadas com sucesso.')
+            return redirect('editar_conta')
+        else:
+            messages.error(request, 'Corrija os erros abaixo.')
+    else:
+        form = EditForm(instance=request.user)
+    return render(request, 'meu_app/editar_conta.html', {'form': form})
 
 @login_required
 def upload_perfil(request):

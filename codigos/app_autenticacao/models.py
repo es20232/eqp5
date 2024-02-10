@@ -12,6 +12,7 @@ class Galeria(models.Model):
         return f"Galeria de {self.user.username}"
 
 class Usuario(AbstractUser):
+    name = models.CharField(max_length=30)
     email = models.EmailField(unique=True)
     is_verified = models.BooleanField(default=False)
     bio = models.TextField(blank=True)

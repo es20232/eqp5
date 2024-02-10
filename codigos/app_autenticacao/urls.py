@@ -13,6 +13,7 @@ urlpatterns = [
     path('redefinir-senha/<str:token>/', views.redefinir_senha, name='redefinir_senha'),
     path('perfil/', views.profile_view, name='perfil'),  
     path('upload_perfil/', views.upload_perfil, name='upload_perfil'),
+    path('editar_conta/', views.editar_conta, name='editar_conta'), 
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,8 +1,8 @@
+
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Usuario, Galeria
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.forms import UserChangeForm
 from django.conf import settings
 
 class UsuarioCreationForm(UserCreationForm):
@@ -20,14 +20,14 @@ class UsuarioLoginForm(AuthenticationForm):
 
 class EditForm(UserChangeForm):
     photo = forms.ImageField(required=False, widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
-
     class Meta:
         model = Usuario
-        fields = ['photo' ]
+        fields = ['photo', 'name', 'username', 'bio', 'email']
+        labels = {'name': 'Nome', 'username': 'Nome de Usuário', 'bio': 'Biografia','email': 'Email',  
+        }
 
 class GaleriaForm(forms.ModelForm):
     foto = forms.ImageField(required=False, widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
-
     class Meta:
         model = Galeria
         fields = ['foto']

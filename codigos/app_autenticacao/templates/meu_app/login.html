@@ -16,31 +16,25 @@
                     <h2>Login</h2>
 
                     <label for="username">Usuário:</label>
-                    <p>
-                        <input type="text" id="username" name="username" required>
-                    </p>
-                    
+                    <p> <input type="text" id="username" name="username" required></p>
                     <label for="password">Senha:</label>
-                    <p>
-                        <input type="password" id="password" name="password" required>
-                    </p>
-                        
-                    <p>
-                        <input type="submit" value="Entrar" />
-                    </p>
+                    <p> <input type="password" id="password" name="password" required></p>
+                    <p> <input type="submit" value="Entrar"/></p>
+
                 </form>
 
                 <p class="signup-link">Não tem uma conta? <a href="{% url 'criar_conta' %}">Criar conta</a></p>
-                
                 <p class="forgot-password-link"><a href="{% url 'iniciar_redefinir_senha' %}"> Esqueceu sua senha?</a></p>
 
                 {% if messages %}
                     <ul class="messages">
                         {% for message in messages %}
-                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                         {% endfor %}
                     </ul>
                 {% endif %}
+            </div>
+        </div>
     </div>
 </body>
 </html>

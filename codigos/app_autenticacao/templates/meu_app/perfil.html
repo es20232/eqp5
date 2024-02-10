@@ -29,17 +29,28 @@
         <p class="bio">{{ usuario.bio }}</p>
         <div class="additional-info">
             <p>Email: {{ usuario.email }}</p>
-            <!-- adicione informações que desejar mostrar na bio -->
+        </div>
+    </div>
+    
+    <div id="editarConta">
+        <button onclick="mostrarEditarConta()">Editar Conta</button>
+        <div id="formEditarConta" style="display: none;">
+            <form method="post" action="{% url 'perfil' %}">
+                {% csrf_token %}
+                {{ form.name.label_tag }} {{ form.name }} 
+                {{ form.email.label_tag }} {{ form.email }}
+                {{ form.username.label_tag }} {{ form.username }}
+                {{ form.bio.label_tag }} {{ form.bio }}
+                <button type="submit">Salvar Alterações</button>
+            </form>
         </div>
     </div>
 
-    <!-- botoes galeria e posts -->
     <div id="botoesGaleriaPosts">
         <button onclick="mostrarGaleria()">Galeria</button>
         <button onclick="mostrarPosts()">Posts</button>
     </div>
 
-    <!-- conteudo da galeria e posts -->
     <div id="conteudoGaleria" style="display: none;">
         <h2>Galeria</h2>
         <form method="post" enctype="multipart/form-data" action="{% url 'perfil' %}">
@@ -56,21 +67,19 @@
 
     <script>
 
-        // Adiciona um ouvinte de evento ao botão de carregar foto
+        // botão de carregar foto
         document.getElementById('carregar-foto-btn').addEventListener('click', function() {
             document.querySelector('form').style.display = 'block';
         });
 
-        // Adiciona um ouvinte de evento ao botão de editar informações
+        // botão de editar informações
         document.getElementById('editar-informacoes').addEventListener('click', function() {
             document.getElementById('form-editar-informacoes').style.display = 'block';
             this.style.display = 'none';
         });
-
+        // alterna entre mostra a galeria e posts no perfil
         function mostrarBotoes() {
             var botoesEditarPerfil = document.getElementById('botoesEditarPerfil');
-            
-            // Alterna a visibilidade dos botões
             if (botoesEditarPerfil.style.display === 'none' || botoesEditarPerfil.style.display === '') {
                 botoesEditarPerfil.style.display = 'block';
             } else {
@@ -78,10 +87,14 @@
             }
         }
 
+        function mostrarEditarConta() {
+            var formEditarConta = document.getElementById('formEditarConta');
+            formEditarConta.style.display = (formEditarConta.style.display === 'none') ? 'block' : 'none';
+        }
+
         function mostrarGaleria() {
             var conteudoGaleria = document.getElementById('conteudoGaleria');
             var conteudoPosts = document.getElementById('conteudoPosts');
-
             conteudoGaleria.style.display = 'block';
             conteudoPosts.style.display = 'none';
         }
@@ -89,11 +102,9 @@
         function mostrarPosts() {
             var conteudoGaleria = document.getElementById('conteudoGaleria');
             var conteudoPosts = document.getElementById('conteudoPosts');
-
             conteudoGaleria.style.display = 'none';
             conteudoPosts.style.display = 'block';
         }
-
     </script>
 </body>
 </html>
