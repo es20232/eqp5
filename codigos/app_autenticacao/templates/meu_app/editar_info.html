@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar informações</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    {% csrf_token %}
+    <a href="{% url 'perfil' %}"><button>Voltar</button></a>
+
+    <button id="btn-alterar">Alterar Informações</button>
+
+    <div id="form-alterar" class="hidden">
+        <form id="form-alterar-info" method="post" onsubmit="return validarFormulario()">
+            {% csrf_token %}
+            <h2>Alterar Informações</h2>
+            <div class="additional-info">
+                <label for="id_name"> Novo nome:</label>
+                {{ form.name }}
+                <br>
+
+                <label for="id_email">Novo email:</label>
+                {{ form.email }}
+                <br>
+
+                <label for="id_bio">Nova bio:</label>
+                {{ form.bio }}
+                <br>
+
+                <label for="id_username">Novo username:</label>
+                {{ form.username }}
+                <br>
+
+                <label for="id_password">Nova Senha:</label>
+                {{ form.password }}
+                <br>
+
+                <label for="id_password_confirm">Confirmar Senha:</label>
+                <input type="password" id="id_password_confirm" name="password_confirm" required><br>
+                
+                <p><button type="submit">Salvar Alterações</button></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("btn-alterar").addEventListener("click", function() {
+            document.getElementById("form-alterar").classList.remove("hidden");
+            document.getElementById("id_password_confirm").value = document.getElementById("id_password").value;
+        });
+
+        function validarFormulario() {
+            var name = document.getElementById("id_name").value;
+            var username = document.getElementById("id_username").value;
+            var email = document.getElementById("id_email").value;
+            var password = document.getElementById("id_password").value;
+            var password_confirm = document.getElementById("id_password_confirm").value;
+
+            if (!username.trim() ||!name.trim() || !email.trim() || !password.trim() || !password_confirm.trim()) {
+                alert("Por favor, preencha todos os campos obrigatórios.");
+                return false;
+            }
+
+            if (password_confirm !== password) {
+                alert("A confirmação de senha deve ser igual à senha.");
+                return false;
+            }
+
+            if (password_confirm.length < 8) {
+                alert("A senha deve ter no mínimo 8 caracteres.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>
