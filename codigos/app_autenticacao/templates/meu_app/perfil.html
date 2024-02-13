@@ -26,58 +26,55 @@
         </div>
         
         <div class="username">{{ usuario.username }}</div>
+        <div class="name">{{ usuario.name }}</div>
         <p class="bio">{{ usuario.bio }}</p>
         <div class="additional-info">
             <p>Email: {{ usuario.email }}</p>
+            <!-- adicione informações que desejar mostrar na bio -->
         </div>
+        <div>
+            <a href="{% url 'editar_info' %}" class="btn btn-primary">Editar informacoes</a>
+        </div>
+        <br>
+        <div>
+            <a href="{% url 'dashboard' %}" class="btn btn-primary">Voltar</a>
+        </div>
+
     </div>
     
-    <div id="editarConta">
-        <button onclick="mostrarEditarConta()">Editar Conta</button>
-        <div id="formEditarConta" style="display: none;">
-            <form method="post" action="{% url 'perfil' %}">
-                {% csrf_token %}
-                {{ form.name.label_tag }} {{ form.name }} 
-                {{ form.email.label_tag }} {{ form.email }}
-                {{ form.username.label_tag }} {{ form.username }}
-                {{ form.bio.label_tag }} {{ form.bio }}
-                <button type="submit">Salvar Alterações</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="botoesGaleriaPosts">
-        <button onclick="mostrarGaleria()">Galeria</button>
-        <button onclick="mostrarPosts()">Posts</button>
-    </div>
-
-    <div id="conteudoGaleria" style="display: none;">
-        <h2>Galeria</h2>
-        <form method="post" enctype="multipart/form-data" action="{% url 'perfil' %}">
+    <div>
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form_galeria.foto }}
-            <button type="submit">Adicionar foto na Galeria</button>
+            {{ photo_form.image }}
+            <p><button type="submit">Adicionar foto na Galeria</button></p>
         </form>
-        {% for foto in fotos %}
-            {% if foto.foto %}
-                <img src="{{ foto.foto.url }}" alt="Foto">
+    </div>
+
+    <div>
+        <button id="mostrarGaleriaBtn" onclick="mostrarGaleria()">Galeria</button>
+    </div>
+       
+    <div class="galeria-container" id="galeria" style="display: none;">
+        {% for photo in photos %}
+            {% if photo.image %}
+                <img src="{{ photo.image.url }}" alt="Photo">
             {% endif %}
         {% endfor %}
     </div>
 
     <script>
-
         // botão de carregar foto
         document.getElementById('carregar-foto-btn').addEventListener('click', function() {
             document.querySelector('form').style.display = 'block';
         });
-
+    
         // botão de editar informações
         document.getElementById('editar-informacoes').addEventListener('click', function() {
             document.getElementById('form-editar-informacoes').style.display = 'block';
             this.style.display = 'none';
         });
-        // alterna entre mostra a galeria e posts no perfil
+    
+        // botao para trocar a foto de perfil
         function mostrarBotoes() {
             var botoesEditarPerfil = document.getElementById('botoesEditarPerfil');
             if (botoesEditarPerfil.style.display === 'none' || botoesEditarPerfil.style.display === '') {
@@ -86,24 +83,15 @@
                 botoesEditarPerfil.style.display = 'none';
             }
         }
-
-        function mostrarEditarConta() {
-            var formEditarConta = document.getElementById('formEditarConta');
-            formEditarConta.style.display = (formEditarConta.style.display === 'none') ? 'block' : 'none';
-        }
-
+    
+        // botão para mostrar a galeria
         function mostrarGaleria() {
-            var conteudoGaleria = document.getElementById('conteudoGaleria');
-            var conteudoPosts = document.getElementById('conteudoPosts');
-            conteudoGaleria.style.display = 'block';
-            conteudoPosts.style.display = 'none';
-        }
-
-        function mostrarPosts() {
-            var conteudoGaleria = document.getElementById('conteudoGaleria');
-            var conteudoPosts = document.getElementById('conteudoPosts');
-            conteudoGaleria.style.display = 'none';
-            conteudoPosts.style.display = 'block';
+            var galeria = document.getElementById('galeria');
+            if (galeria.style.display === 'none' || galeria.style.display === '') {
+                galeria.style.display = 'block';
+            } else {
+                galeria.style.display = 'none';
+            }
         }
     </script>
 </body>

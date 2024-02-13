@@ -1,14 +1,27 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, update_session_auth_hash
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Usuario, PasswordResetToken, Galeria
-from .forms import EditForm, UsuarioCreationForm, UsuarioLoginForm, GaleriaForm
+from .models import Usuario, PasswordResetToken, Photo
+from .forms import EditForm, UsuarioCreationForm, UsuarioLoginForm,Form_editar_informacoes, PhotoForm
 import uuid
 from django.urls import reverse
-from django.contrib.auth.forms import PasswordChangeForm
+
+@login_required
+def editar_info(request):
+    if request.method == 'POST':
+        form = Form_editar_informacoes(request.POST, instance=request.user)
+        if form.is_valid():
+            user = request.user
+            form.save()
+            update_session_auth_hash(request, user)
+            return redirect('perfil') 
+    else: 
+        form = Form_editar_informacoes(instance=request.user)
+    return render(request, 'meu_app/editar_info.html', {'form': form})
 
 @login_required
 def dashboard_view(request):
@@ -16,36 +29,24 @@ def dashboard_view(request):
 
 @login_required
 def profile_view(request):
-    fotos = Galeria.objects.filter(user=request.user) 
-    
     if request.method == 'POST':
-        form = EditForm(request.POST, instance=request.user)
-        if form.is_valid():
+        form = EditForm(request.POST, request.FILES, instance=request.user)
+        photo_form = PhotoForm(request.POST, request.FILES)
+        
+        if form.is_valid() and photo_form.is_valid():
             form.save()
-            messages.success(request, 'Dados atualizadas com sucesso.')
-            senha_form = PasswordChangeForm(request.user, request.POST)
-            if senha_form.is_valid():
-                senha_form.save()
-                update_session_auth_hash(request, request.user)
+            photo_instance = photo_form.save(commit=False)
+            photo_instance.user = request.user
+            photo_instance.save()
+            update_session_auth_hash(request, request.user)
             return redirect('perfil')
     else:
         form = EditForm(instance=request.user)
-        form_galeria = GaleriaForm()
-    return render(request, 'meu_app/perfil.html', {'usuario': request.user, 'form': form, 'form_galeria': form_galeria, 'fotos': fotos, 'posts': posts})
-
-@login_required
-def editar_conta(request):
-    if request.method == 'POST':
-        form = EditForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Suas informações foram atualizadas com sucesso.')
-            return redirect('editar_conta')
-        else:
-            messages.error(request, 'Corrija os erros abaixo.')
-    else:
-        form = EditForm(instance=request.user)
-    return render(request, 'meu_app/editar_conta.html', {'form': form})
+        photo_form = PhotoForm()
+        
+    photos = Photo.objects.filter(user=request.user)
+    
+    return render(request, 'meu_app/perfil.html', {'usuario': request.user, 'form': form, 'photo_form': photo_form, 'photos': photos})
 
 @login_required
 def upload_perfil(request):
@@ -154,5 +155,3 @@ def redefinir_senha(request, token):
             messages.error(request, 'As senhas não coincidem. Tente novamente.')
             return redirect('redefinir_senha', token=token)
     return render(request, 'password/redefinir_senha.html', {'token': token})
-
-
