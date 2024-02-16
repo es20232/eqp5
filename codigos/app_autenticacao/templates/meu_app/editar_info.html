@@ -1,85 +1,102 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar informações</title>
-    <style>
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_editarinfo.css' %}">
 </head>
-<body>
-    {% csrf_token %}
-    <a href="{% url 'perfil' %}"><button>Voltar</button></a>
+<body class="editar-body">
+    <div class="editar-container">
+        {% csrf_token %}
 
-    <button id="btn-alterar">Alterar Informações</button>
+        <!--<button id="btn-alterar">Alterar Informações</button> -->
 
-    <div id="form-alterar" class="hidden">
-        <form id="form-alterar-info" method="post" onsubmit="return validarFormulario()">
-            {% csrf_token %}
-            <h2>Alterar Informações</h2>
-            <div class="additional-info">
-                <label for="id_name"> Novo nome:</label>
-                {{ form.name }}
-                <br>
+        <div id="form-alterar">
+            <form id="form-alterar-info" method="post" onsubmit="return validarFormulario()">
 
-                <label for="id_email">Novo email:</label>
-                {{ form.email }}
-                <br>
+                {% csrf_token %}
+                <h2>Alterar Informações</h2>
 
-                <label for="id_bio">Nova bio:</label>
-                {{ form.bio }}
-                <br>
+                <div class="additional-info">
 
-                <label for="id_username">Novo username:</label>
-                {{ form.username }}
-                <br>
+                    <div class="form-group">
+                        <label for="id_name"> Novo nome:</label>
+                        {{ form.name }}
+                        <br>
+                    </div>
 
-                <label for="id_password">Nova Senha:</label>
-                {{ form.password }}
-                <br>
+                    <div class="form-group">
+                        <label for="id_email">Novo email:</label>
+                        {{ form.email }}
+                        <br>
+                    </div>
 
-                <label for="id_password_confirm">Confirmar Senha:</label>
-                <input type="password" id="id_password_confirm" name="password_confirm" required><br>
-                
-                <p><button type="submit">Salvar Alterações</button></p>
+                    <div class="form-group">
+                        <label for="id_bio">Nova bio:</label>
+                        {{ form.bio }}
+                        <br>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_username">Novo username:</label>
+                        {{ form.username }}
+                        <br>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_password">Nova Senha:</label>
+                        {{ form.password }}
+                        <br>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_password_confirm">Confirmar Senha:</label>
+                        <input type="password" id="id_password_confirm" name="password_confirm" required>
+                    </div>
+
+                </div><br>
+            </form>
+            <div class="buttons-container">
+                <button type="submit" class="btn-salvar">Salvar Alterações</button>
+                <a href="{% url 'perfil' %}"><button class="btn-cancelar">Cancelar</button></a>
+                <div class="clearfix"></div>
             </div>
-        </form>
+
+        </div>
+
+        <script>
+            document.getElementById("btn-alterar").addEventListener("click", function() {
+                document.getElementById("form-alterar").classList.remove("hidden");
+                document.getElementById("id_password_confirm").value = document.getElementById("id_password").value;
+            });
+
+            function validarFormulario() {
+                var name = document.getElementById("id_name").value;
+                var username = document.getElementById("id_username").value;
+                var email = document.getElementById("id_email").value;
+                var password = document.getElementById("id_password").value;
+                var password_confirm = document.getElementById("id_password_confirm").value;
+
+                if (!username.trim() ||!name.trim() || !email.trim() || !password.trim() || !password_confirm.trim()) {
+                    alert("Por favor, preencha todos os campos obrigatórios.");
+                    return false;
+                }
+
+                if (password_confirm !== password) {
+                    alert("A confirmação de senha deve ser igual à senha.");
+                    return false;
+                }
+
+                if (password_confirm.length < 8) {
+                    alert("A senha deve ter no mínimo 8 caracteres.");
+                    return false;
+                }
+
+                return true;
+            }
+        </script>
     </div>
-
-    <script>
-        document.getElementById("btn-alterar").addEventListener("click", function() {
-            document.getElementById("form-alterar").classList.remove("hidden");
-            document.getElementById("id_password_confirm").value = document.getElementById("id_password").value;
-        });
-
-        function validarFormulario() {
-            var name = document.getElementById("id_name").value;
-            var username = document.getElementById("id_username").value;
-            var email = document.getElementById("id_email").value;
-            var password = document.getElementById("id_password").value;
-            var password_confirm = document.getElementById("id_password_confirm").value;
-
-            if (!username.trim() ||!name.trim() || !email.trim() || !password.trim() || !password_confirm.trim()) {
-                alert("Por favor, preencha todos os campos obrigatórios.");
-                return false;
-            }
-
-            if (password_confirm !== password) {
-                alert("A confirmação de senha deve ser igual à senha.");
-                return false;
-            }
-
-            if (password_confirm.length < 8) {
-                alert("A senha deve ter no mínimo 8 caracteres.");
-                return false;
-            }
-
-            return true;
-        }
-    </script>
 </body>
 </html>
