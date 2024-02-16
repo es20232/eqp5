@@ -155,3 +155,9 @@ def redefinir_senha(request, token):
             messages.error(request, 'As senhas não coincidem. Tente novamente.')
             return redirect('redefinir_senha', token=token)
     return render(request, 'password/redefinir_senha.html', {'token': token})
+
+#Rayanne em 16/02/24:Tratamento de page not found
+from django.shortcuts import render
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)        

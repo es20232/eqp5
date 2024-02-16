@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 ERROR</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #438086;
+        }
+        .container {
+            text-align: center;
+            padding: 100px;
+        }
+        h1 {
+            font-size: 48px;
+            color: #fff;
+        }
+        p {
+            font-size: 18px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Opa, essa página não existe :( </h1>
+        <p>A página que você tentou acessar não existe. Deixa eu te ajudar:</p>
+        <a href="{% url 'login' %} " style="text-decoration: none; color: #ccc;">Clique aqui para voltar</a>
+    </div>
+</body>
+</html>
