@@ -59,15 +59,27 @@
         {% endif %}
     </form>
     
-    <div class="galeria-container" id="galeria" style="display: none;">
+
+
+
+ 
+
+
+
+    <div class="galeria-container" id="galeria">
         {% for photo in photos %}
             {% if photo.image %}
-                <a href="{% url 'postar_foto' photo.id %}">
-                    <img src="{{ photo.image.url }}" alt="Photo">
-                </a>
+                <div class="imagem-galeria">
+                    <a href="{% url 'postar_foto' photo.id %}">
+                        <img src="{{ photo.image.url }}" alt="Photo">
+                    </a>
+                </div>
             {% endif %}
         {% endfor %}
     </div>
+
+
+
 
     <div class="posts-container" id="posts" style="display: none;">
         {% for post in posts %}

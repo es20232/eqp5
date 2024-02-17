@@ -14,6 +14,28 @@ body {
     margin-top: 20px;
 }
 
+
+
+.galeria-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+    gap: 20px; /* Espaçamento entre as imagens */
+}
+
+.imagem-galeria {
+    width: 100%; /* Garante que a imagem ocupe toda a largura da célula do grid */
+    height: auto; /* Altura automática para manter a proporção */
+}
+
+.imagem-galeria img {
+    max-width: 100%; /* Garante que a imagem não ultrapasse a largura do contêiner */
+    max-height: 100%; /* Garante que a imagem não ultrapasse a altura do contêiner */
+    width: 250px; /* Define a largura da imagem como automática para manter a proporção */
+    height: 250px; /* Define a altura da imagem como automática para manter a proporção */
+    object-fit: cover; /* Garante que a imagem mantenha sua proporção, cortando o excesso se necessário */
+}
+
+
 .avatar {
     width: 100px;
     height: 100px;
