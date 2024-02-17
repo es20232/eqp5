@@ -84,7 +84,7 @@
         {% endif %}
     </form>
     
-    <div class="galeria-container" id="galeria">
+    <div class="galeria-container" id="galeria" style="display: none;">
         {% for photo in photos %}
             {% if photo.image %}
                 <div class="imagem-galeria">
@@ -95,6 +95,9 @@
             {% endif %}
         {% endfor %}
     </div>
+
+
+
 
     <br><div class="posts-container" id="posts" 
     style="display: none; display: grid;
