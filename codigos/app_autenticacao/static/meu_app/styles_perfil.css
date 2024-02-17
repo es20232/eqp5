@@ -1,8 +1,15 @@
+*, *:before, *:after {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #fafafa;
     margin: 0;
     padding: 0;
+    
 }
 
 .profile-container {
@@ -10,17 +17,52 @@ body {
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid #dd1d;
     margin-top: 20px;
+    margin-left: 200px;
+    display: flex;
+    align-items: center;
 }
+
+
+
+#editarPerfilBtn {
+    margin-left: 10px; /* ou qualquer outro valor de margem que você preferir */
+}
+.avatar-container {
+    display: flex;
+    align-items: center;
+}
+
+
+.galeria-container, .post {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+    gap: 20px; /* Espaçamento entre as imagens */
+}
+
+.imagem-galeria {
+    width: 100%; /* Garante que a imagem ocupe toda a largura da célula do grid */
+    height: auto; /* Altura automática para manter a proporção */
+}
+
+.imagem-galeria img {
+    max-width: 100%; /* Garante que a imagem não ultrapasse a largura do contêiner */
+    max-height: 100%; /* Garante que a imagem não ultrapasse a altura do contêiner */
+    width: 250px; /* Define a largura da imagem como automática para manter a proporção */
+    height: 250px; /* Define a altura da imagem como automática para manter a proporção */
+    object-fit: cover; /* Garante que a imagem mantenha sua proporção, cortando o excesso se necessário */
+}
+
 
 .avatar {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 10px;
+    margin-right: 10px; /* Adicione margem direita para separar a foto do botão */
 }
+
 
 .upload-btn-wrapper {
     position: relative;

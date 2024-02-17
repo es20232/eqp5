@@ -56,9 +56,34 @@ def profile_view(request, username=None):
         post_form = PostForm()
 
     photos = Photo.objects.filter(user=user)
-    posts = Post.objects.filter(user=user).select_related('photo') 
+    posts = Post.objects.filter(user=user).select_related('photo')
+    
+    # Profile Stats -Rayanne
+    posts_count = Post.objects.filter(user=user).count()
+    #following_count = Follow.objects.filter(follower=user).count()
+    #followers_count = Follow.objects.filter(following=user).count()
+    #follow_status = Follow.objects.filter(following=user, follower=request.user).exists()
 
-    return render(request, 'meu_app/perfil.html', {'usuario': user, 'form': form, 'photo_form': photo_form, 'post_form': post_form, 'photos': photos, 'posts': posts})
+    # pagination -Rayanne
+    #paginator = Paginator(posts, 8)
+    #page_number = request.GET.get('page')
+    #posts_paginator = paginator.get_page(page_number)
+
+    context = {
+        'usuario': user, 
+        'form': form, 
+        'photo_form': photo_form, 
+        'post_form': post_form, 
+        'photos': photos, 
+        'posts': posts,
+        'posts_count':posts_count,
+        #'following_count':following_count,
+        #'followers_count':followers_count,
+        #'posts_paginator':posts_paginator,
+        #'follow_status':follow_status
+    }
+
+    return render(request, 'meu_app/perfil.html', context)
 
 @login_required
 def postar_foto(request, photo_id):

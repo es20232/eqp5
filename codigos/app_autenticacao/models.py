@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
 class Usuario(AbstractUser):
-    nome = models.CharField(max_length=30, default='valor_padrão')
+    nome = models.CharField(max_length=30, default='Nome')
     email = models.EmailField(unique=True)
     is_verified = models.BooleanField(default=False)
     bio = models.TextField(blank=True)

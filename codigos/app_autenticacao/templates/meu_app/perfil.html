@@ -4,19 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" conteudo="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
+    <title>Perfil | @{{ usuario.username }}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_perfil.css' %}">
 </head>
 <body>
-    <div class="profile-container">
-        {% if usuario.photo %}
-            <img class="avatar" src="{{ usuario.photo.url }}" alt="Avatar">
-        {% else %}
-            <div class="avatar no-photo"></div>
-        {% endif %}
-
-        <div id="editarPerfilBtn" {% if usuario == request.user %} onclick="mostrarBotoes()" {% endif %}>
-            {% if usuario == request.user %}Editar Perfil{% endif %}
+    <div class="profile-container" style="display: flex; align-items: center;">
+        <div class="avatar-container" >
+            {% if usuario.photo %}
+                <img class="avatar" src="{{ usuario.photo.url }}" alt="Avatar" style="margin-right: 10px; ">
+            {% else %}
+                <div class="avatar no-photo"></div>
+            {% endif %}
+    
+            
         </div>
 
         <div id="botoesEditarPerfil" style="display: none;">
@@ -24,31 +24,56 @@
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.photo }}
-                    <button type="submit">Atualizar Foto</button>
+                    <button class="btn btn-primary" type="submit">Atualizar Foto</button>
                 </form>
             {% endif %}
         </div>
 
-        <div class="username">{{ usuario.username }}</div>
-        <div class="name">{{ usuario.name }}</div>
-        <p class="bio">{{ usuario.bio }}</p>
-        <div class="additional-info">
-            <p>{{ usuario.email }}</p>
-        </div>
-
-        <div>
-            {% if usuario == request.user %}
-                <a href="{% url 'editar_info' %}" class="btn btn-primary">Editar informações</a>
+        <div class="profile-user-name">
+            {% if usuario.nome %} 
+            <h2 class="profile-user-name">{{ usuario.nome }}</h2> 
             {% endif %}
-        </div>
-    </div>
+            <h5 style="font-size: 15px;" class="profile-user-name">@{{usuario.username}}</h5> 
 
-    <div>
-        {% if usuario == request.user %}
-            <button id="mostrarGaleriaBtn" onclick="mostrarGaleria()">Galeria</button>
-        {% endif %}
-        <button id="mostrarPostsBtn" onclick="mostrarPosts()">Posts</button>
+            <div class="profile-bio" style="margin-top:auto">
+                {% if usuario.bio %}
+                <p><span class="profile-real-name"></span>◉ {{usuario.bio}}</p>
+                {% endif %}
+                
+            </div>
+            
+            <div style="display: flex; justify-content: center; margin-bottom: 10px;">
+                <div id="editarPerfilBtn" {% if usuario == request.user %} onclick="mostrarBotoes()" {% endif %}>
+                    {% if usuario == request.user %}
+                    <button class="btn btn-primary" type="submit" style="font-size: 15px;">Editar Foto de Perfil</button>
+                    {% endif %}
+                </div>
+                <div style="margin-left: 10px; margin-top: 10px;">  
+                    {% if usuario == request.user %}
+                    <a style="text-decoration: none; width:35%;" href="{% url 'editar_info' %}" class="btn btn-primary">Editar informações</a>
+                    <!--<a style="text-decoration: none;" href="{% url 'logout' %}" class="btn btn-primary">Sair</a>-->
+                    {% endif %}
+                </div>
+            </div>
+            
+            <br>
+        </div>    
+
+        <!--<div class="username">{{ usuario.username }}</div>
+        <div class="name">{{ usuario.name }}</div>-->
         
+        <!--<div class="additional-info">
+            {% if usuario == request.user %}
+                <p>{{ usuario.email }}</p>
+            {% endif %}
+        </div>-->
+    </div><br>
+
+    <div class="profile-user-settings" style="margin-left: 600px">
+        <button class="btn btn-primary" id="mostrarPostsBtn" onclick="mostrarPosts()">Posts</button>
+        {% if usuario == request.user %}
+        <button class="btn btn-primary" id="mostrarGaleriaBtn" onclick="mostrarGaleria()">Galeria</button>
+        {% endif %}
     </div>
     
     <form id="formGaleria" method="post" enctype="multipart/form-data" style="display: none;">
@@ -59,22 +84,27 @@
         {% endif %}
     </form>
     
-    <div class="galeria-container" id="galeria" style="display: none;">
+    <div class="galeria-container" id="galeria">
         {% for photo in photos %}
             {% if photo.image %}
-                <a href="{% url 'postar_foto' photo.id %}">
-                    <img src="{{ photo.image.url }}" alt="Photo">
-                </a>
+                <div class="imagem-galeria">
+                    <a href="{% url 'postar_foto' photo.id %}">
+                        <img src="{{ photo.image.url }}" alt="Photo">
+                    </a>
+                </div>
             {% endif %}
         {% endfor %}
     </div>
 
-    <div class="posts-container" id="posts" style="display: none;">
+    <br><div class="posts-container" id="posts" 
+    style="display: none; display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;">
         {% for post in posts %}
-            <div class="post">
+            <div class="post" style="width: 100%; height: auto;">
                 {% if post.photo.image %}
                     <img src="{{ post.photo.image.url }}" alt="Photo">
-                    <p>Descrição: {{ post.conteudo }}</p>
+                    <p>{{ post.conteudo }}</p>
                 {% endif %}
             </div>
         {% endfor %}
@@ -84,7 +114,7 @@
         {% csrf_token %}
         {{ post_form.image }}
         {{ post_form.conteudo }} <!-- descricao da imagem que o usuario preenche -->
-        <button type="submit">Postar Foto</button>
+        <button class="btn btn-primary" type="submit">Postar Foto</button>
     </form>
     
     <script>
