@@ -11,9 +11,10 @@ urlpatterns = [
     path('confirmar-conta/', views.confirmar_conta, name='confirmar_conta'),
     path('iniciar-redefinir-senha/', views.iniciar_redefinir_senha, name='iniciar_redefinir_senha'),
     path('redefinir-senha/<str:token>/', views.redefinir_senha, name='redefinir_senha'),
-    path('perfil/', views.profile_view, name='perfil'),  
+    path('perfil/<str:username>/', views.profile_view, name='perfil'),  
     path('upload_perfil/', views.upload_perfil, name='upload_perfil'),
     path('editar_info/', views.editar_info, name='editar_info'),
+    path('postar_foto/<int:photo_id>/', views.postar_foto, name='postar_foto'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

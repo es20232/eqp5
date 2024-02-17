@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" conteudo="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
     <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_perfil.css' %}">
 </head>
@@ -15,65 +15,88 @@
             <div class="avatar no-photo"></div>
         {% endif %}
 
-        <div id="editarPerfilBtn" onclick="mostrarBotoes()">Editar Perfil</div>
+        <div id="editarPerfilBtn" {% if usuario == request.user %} onclick="mostrarBotoes()" {% endif %}>
+            {% if usuario == request.user %}Editar Perfil{% endif %}
+        </div>
 
         <div id="botoesEditarPerfil" style="display: none;">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.photo }}
-                <button type="submit">Atualizar Foto</button>
-            </form>
+            {% if usuario == request.user %}
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.photo }}
+                    <button type="submit">Atualizar Foto</button>
+                </form>
+            {% endif %}
         </div>
-        
+
         <div class="username">{{ usuario.username }}</div>
         <div class="name">{{ usuario.name }}</div>
         <p class="bio">{{ usuario.bio }}</p>
         <div class="additional-info">
-            <p>Email: {{ usuario.email }}</p>
-            <!-- adicione informações que desejar mostrar na bio -->
-        </div>
-        <div>
-            <a href="{% url 'editar_info' %}" class="btn btn-primary">Editar informacoes</a>
-        </div>
-        <br>
-        <div>
-            <a href="{% url 'dashboard' %}" class="btn btn-primary">Voltar</a>
+            <p>{{ usuario.email }}</p>
         </div>
 
+        <div>
+            {% if usuario == request.user %}
+                <a href="{% url 'editar_info' %}" class="btn btn-primary">Editar informações</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div>
+        {% if usuario == request.user %}
+            <button id="mostrarGaleriaBtn" onclick="mostrarGaleria()">Galeria</button>
+        {% endif %}
+        <button id="mostrarPostsBtn" onclick="mostrarPosts()">Posts</button>
+        
     </div>
     
-    <div>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ photo_form.image }}
+    <form id="formGaleria" method="post" enctype="multipart/form-data" style="display: none;">
+        {% csrf_token %}
+        {{ photo_form.image }}
+        {% if usuario == request.user %}
             <p><button type="submit">Adicionar foto na Galeria</button></p>
-        </form>
-    </div>
-
-    <div>
-        <button id="mostrarGaleriaBtn" onclick="mostrarGaleria()">Galeria</button>
-    </div>
-       
+        {% endif %}
+    </form>
+    
     <div class="galeria-container" id="galeria" style="display: none;">
         {% for photo in photos %}
             {% if photo.image %}
-                <img src="{{ photo.image.url }}" alt="Photo">
+                <a href="{% url 'postar_foto' photo.id %}">
+                    <img src="{{ photo.image.url }}" alt="Photo">
+                </a>
             {% endif %}
         {% endfor %}
     </div>
 
+    <div class="posts-container" id="posts" style="display: none;">
+        {% for post in posts %}
+            <div class="post">
+                {% if post.photo.image %}
+                    <img src="{{ post.photo.image.url }}" alt="Photo">
+                    <p>Descrição: {{ post.conteudo }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    
+    <form id="formPostagem" method="post" enctype="multipart/form-data" style="display: none;">
+        {% csrf_token %}
+        {{ post_form.image }}
+        {{ post_form.conteudo }} <!-- descricao da imagem que o usuario preenche -->
+        <button type="submit">Postar Foto</button>
+    </form>
+    
     <script>
         // botão de carregar foto
         document.getElementById('carregar-foto-btn').addEventListener('click', function() {
             document.querySelector('form').style.display = 'block';
         });
-    
         // botão de editar informações
         document.getElementById('editar-informacoes').addEventListener('click', function() {
             document.getElementById('form-editar-informacoes').style.display = 'block';
             this.style.display = 'none';
         });
-    
         // botao para trocar a foto de perfil
         function mostrarBotoes() {
             var botoesEditarPerfil = document.getElementById('botoesEditarPerfil');
@@ -84,15 +107,62 @@
             }
         }
     
-        // botão para mostrar a galeria
         function mostrarGaleria() {
             var galeria = document.getElementById('galeria');
+            var formGaleria = document.getElementById('formGaleria');  
+
             if (galeria.style.display === 'none' || galeria.style.display === '') {
                 galeria.style.display = 'block';
+                formGaleria.style.display = 'block';  
             } else {
                 galeria.style.display = 'none';
+                formGaleria.style.display = 'none'; 
             }
         }
+
+        function postarFoto() {
+            var formPostagem = document.getElementById('formPostagem');
+            var galeria = document.getElementById('galeria');
+    
+            if (formPostagem.style.display === 'none' || formPostagem.style.display === '') {
+                formPostagem.style.display = 'block';
+                mostrarFotosGaleria(); 
+            } else {
+                formPostagem.style.display = 'none';
+            }
+        }
+    
+        function mostrarFotosGaleria() {
+            var galeria = document.getElementById('galeria');
+            var photos = galeria.getElementsByTagName('img');
+            var formPostagem = document.getElementById('formPostagem');
+    
+            for (var i = 0; i < photos.length; i++) {
+                photos[i].addEventListener('click', function() {
+                    document.getElementById('chosenPhotoInput').value = this.src;
+                    alert('Foto escolhida: ' + this.src);                              
+                    formPostagem.style.display = 'block';
+                });
+            }
+            if (photos.length === 0) {
+                formPostagem.style.display = 'none';
+            }
+        }
+    
+        function mostrarPosts() {
+            var postsContainer = document.getElementById('posts');
+            var galeria = document.getElementById('galeria');
+            var formGaleria = document.getElementById('formGaleria');
+    
+            if (postsContainer.style.display === 'none' || postsContainer.style.display === '') {
+                postsContainer.style.display = 'block';
+                galeria.style.display = 'none';  
+                formGaleria.style.display = 'none';  
+            } else {
+                postsContainer.style.display = 'none';
+            }
+        }
+
     </script>
 </body>
 </html>

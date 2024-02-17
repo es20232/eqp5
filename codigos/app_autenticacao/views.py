@@ -1,53 +1,78 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Usuario, PasswordResetToken, Photo
-from .forms import EditForm, UsuarioCreationForm, UsuarioLoginForm,Form_editar_informacoes, PhotoForm
+from .models import Usuario, PasswordResetToken, Photo, Post
+from .forms import EditForm,UsuarioCreationForm,UsuarioLoginForm,Form_editar_informacoes,PhotoForm,PostForm
 import uuid
 from django.urls import reverse
-
-@login_required
-def editar_info(request):
-    if request.method == 'POST':
-        form = Form_editar_informacoes(request.POST, instance=request.user)
-        if form.is_valid():
-            user = request.user
-            form.save()
-            update_session_auth_hash(request, user)
-            return redirect('perfil') 
-    else: 
-        form = Form_editar_informacoes(instance=request.user)
-    return render(request, 'meu_app/editar_info.html', {'form': form})
+from django.db.models import Q
 
 @login_required
 def dashboard_view(request):
-    return render(request, 'meu_app/dashboard.html', {'usuario': request.user})
+    query = request.GET.get('q')
+    if query:
+        results = Usuario.objects.filter(Q(username__icontains=query) | Q(nome__icontains=query))
+    else:
+        results = None  
+    return render(request, 'meu_app/dashboard.html', {'results': results})
 
 @login_required
-def profile_view(request):
+def profile_view(request, username=None):
+    if username is None:
+        user = request.user
+    else:
+        user = Usuario.objects.get(username=username)
+    post_form = PostForm()
+    
     if request.method == 'POST':
-        form = EditForm(request.POST, request.FILES, instance=request.user)
+        form = EditForm(request.POST, request.FILES, instance=user)
         photo_form = PhotoForm(request.POST, request.FILES)
-        
+        post_form = PostForm(request.POST)
         if form.is_valid() and photo_form.is_valid():
             form.save()
             photo_instance = photo_form.save(commit=False)
-            photo_instance.user = request.user
+            photo_instance.user = user
             photo_instance.save()
-            update_session_auth_hash(request, request.user)
-            return redirect('perfil')
-    else:
-        form = EditForm(instance=request.user)
-        photo_form = PhotoForm()
-        
-    photos = Photo.objects.filter(user=request.user)
-    
-    return render(request, 'meu_app/perfil.html', {'usuario': request.user, 'form': form, 'photo_form': photo_form, 'photos': photos})
+            if photo_form.cleaned_data['publica']:
+                photo_instance.is_public = True
+                photo_instance.save()
+            # add copia para posts
+            conteudo = request.POST.get('post_conteudo', '') 
+            post_instance = Post.objects.create(user=user, conteudo=conteudo, photo=photo_instance)
 
+            update_session_auth_hash(request, user)
+            return redirect('perfil', username=user.username)
+        elif post_form.is_valid():
+            post_instance = post_form.save(commit=False)
+            post_instance.user = user
+            post_instance.save()
+            return redirect('perfil', username=user.username)
+    else:
+        form = EditForm(instance=user)
+        photo_form = PhotoForm()
+        post_form = PostForm()
+
+    photos = Photo.objects.filter(user=user)
+    posts = Post.objects.filter(user=user).select_related('photo') 
+
+    return render(request, 'meu_app/perfil.html', {'usuario': user, 'form': form, 'photo_form': photo_form, 'post_form': post_form, 'photos': photos, 'posts': posts})
+
+@login_required
+def postar_foto(request, photo_id):
+    photo = get_object_or_404(Photo, id=photo_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            conteudo = form.cleaned_data['conteudo']
+            post = Post.objects.create(user=request.user, conteudo=conteudo, photo=photo)
+            return redirect('perfil', username=request.user.username)
+    else:
+        form = PostForm()
+    return render(request, 'meu_app/postar_foto.html', {'form': form, 'photo': photo})
+    
 @login_required
 def upload_perfil(request):
     form = EditForm(instance=request.user)
@@ -57,6 +82,19 @@ def upload_perfil(request):
             form.save()
             return redirect('perfil') 
     return render(request, 'meu_app/upload_perfil.html', {'form': form})
+
+@login_required
+def editar_info(request):
+    if request.method == 'POST':
+        form = Form_editar_informacoes(request.POST, instance=request.user)
+        if form.is_valid():
+            user = request.user
+            form.save()
+            update_session_auth_hash(request, user)
+            return redirect('perfil', username=user.username) 
+    else: 
+        form = Form_editar_informacoes(instance=request.user)
+    return render(request, 'meu_app/editar_info.html', {'form': form})
 
 def login_view(request):
     if request.method == 'POST':
@@ -119,7 +157,6 @@ def iniciar_redefinir_senha(request):
         email = request.POST.get('email')
         try:
             user = Usuario.objects.get(email=email)
-            #user = get_object_or_404(Usuario, email=email)
             token = str(uuid.uuid4())
             PasswordResetToken.objects.create(user=user, token=token)
             reset_link = request.build_absolute_uri(reverse('redefinir_senha', args=[token]))

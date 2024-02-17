@@ -13,7 +13,7 @@
 </head>
 <body>
     {% csrf_token %}
-    <a href="{% url 'perfil' %}"><button>Voltar</button></a>
+    <a href="{% url 'perfil' username=request.user.username %}"><button>Voltar</button></a>
 
     <button id="btn-alterar">Alterar Informações</button>
 

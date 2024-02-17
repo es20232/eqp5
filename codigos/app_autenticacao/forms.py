@@ -1,7 +1,7 @@
-# meu_app/forms.py
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Usuario, Photo
+from .models import Usuario, Photo, Post
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserChangeForm
 
@@ -11,13 +11,12 @@ class UsuarioCreationForm(UserCreationForm):
     
     class Meta:
         model = Usuario
-        fields = ('name', 'email', 'password1', 'password2', 'username')
+        fields = ('name', 'email', 'password1', 'password2', 'username' )
 
 class UsuarioLoginForm(AuthenticationForm):
     class Meta:
         model = Usuario
         fields = ['username', 'password']
-
 
 class EditForm(UserChangeForm):
     photo = forms.ImageField(required=False, widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
@@ -53,6 +52,12 @@ class Form_editar_informacoes(UserChangeForm):
         return instance
     
 class PhotoForm(forms.ModelForm):
+    publica = forms.BooleanField(label='publicar', required=False)  
     class Meta:
         model = Photo
-        fields = ['image']
+        fields = ['image', 'publica']
+        
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['conteudo']
