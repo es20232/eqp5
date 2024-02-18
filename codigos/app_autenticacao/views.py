@@ -58,6 +58,9 @@ def profile_view(request, username=None):
     photos = Photo.objects.filter(user=user)
     posts = Post.objects.filter(user=user).select_related('photo')
     
+    # Verificar quais posts o usuário curtiu
+    liked_posts = [post.id for post in posts if request.user in post.likes.all()]
+
     # Profile Stats -Rayanne
     posts_count = Post.objects.filter(user=user).count()
     #following_count = Follow.objects.filter(follower=user).count()
@@ -76,11 +79,12 @@ def profile_view(request, username=None):
         'post_form': post_form, 
         'photos': photos, 
         'posts': posts,
-        'posts_count':posts_count,
-        #'following_count':following_count,
-        #'followers_count':followers_count,
-        #'posts_paginator':posts_paginator,
-        #'follow_status':follow_status
+        'posts_count': posts_count,
+        'liked_posts': liked_posts,  # Adicionando a lista de posts curtidos pelo usuário
+        #'following_count': following_count,
+        #'followers_count': followers_count,
+        #'posts_paginator': posts_paginator,
+        #'follow_status': follow_status
     }
 
     return render(request, 'meu_app/perfil.html', context)
@@ -217,3 +221,20 @@ def redefinir_senha(request, token):
             messages.error(request, 'As senhas não coincidem. Tente novamente.')
             return redirect('redefinir_senha', token=token)
     return render(request, 'password/redefinir_senha.html', {'token': token})
+
+
+@login_required
+def like_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    user = request.user
+
+    if user in post.likes.all():
+        post.likes.remove(user)
+        liked = False
+    else:
+        post.likes.add(user)
+        liked = True
+
+    return redirect('perfil', username=post.user.username)
+
+

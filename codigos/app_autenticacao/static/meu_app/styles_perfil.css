@@ -42,18 +42,18 @@ body {
 }
 
 .imagem-galeria {
-    width: 100%; /* Garante que a imagem ocupe toda a largura da célula do grid */
-    height: auto; /* Altura automática para manter a proporção */
+    position: relative;
+    display: inline-block;
 }
 
 .imagem-galeria img {
-    max-width: 200px; /* Defina o valor desejado */
-    max-height: 200px; /* Defina o valor desejado */
-    width: auto;
+    display: block;
+    max-width: 100%;
     height: auto;
-    object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
+    border: 2px solid #ccc; /* Cor da moldura */
+    border-radius: 10px; /* Borda arredondada */
+    transition: border-color 0.3s ease; /* Transição suave */
 }
-
 
 
 .post img {
@@ -119,3 +119,16 @@ body {
     font-size: 14px;
     color: #555;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
