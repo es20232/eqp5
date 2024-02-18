@@ -109,6 +109,34 @@
     </form>
 
     <script>
+        // Dicionário para manter o controle de quais fotos cada usuário curtiu
+        var likes = {};
+
+        function likePhoto(photoId) {
+            // Verifica se o usuário já deu like nesta foto
+            if (likes[photoId]) {
+                // Se sim, remove o like
+                delete likes[photoId];
+            } else {
+                // Se não, adiciona o like
+                likes[photoId] = true;
+            }
+
+            // Atualiza a contagem de likes na interface do usuário
+            updateLikesCount(photoId);
+        }
+
+        function updateLikesCount(photoId) {
+            // Obtém o elemento que exibe a contagem de likes
+            var likesCountElement = document.getElementById('likes-count-' + photoId);
+
+            // Obtém o número atual de likes
+            var likesCount = Object.keys(likes).length;
+
+            // Atualiza o texto para refletir o número atual de likes
+            likesCountElement.innerText = likesCount + (likesCount === 1 ? ' like' : ' likes');
+        }
+
         // botão de carregar foto
         document.getElementById('carregar-foto-btn').addEventListener('click', function() {
             document.querySelector('form').style.display = 'block';
@@ -153,20 +181,6 @@
             }
         }
 
-
-
-
-        function likePhoto(photoId) {
-            // Aqui você pode enviar uma solicitação Ajax para o servidor para registrar o like na foto com o ID photoId
-            // Por exemplo, você pode usar fetch() ou jQuery.ajax() para isso
-            // Após receber uma resposta do servidor confirmando que o like foi registrado com sucesso, você pode atualizar a interface do usuário conforme necessário
-            // Por enquanto, vamos apenas simular a atualização da contagem de likes na interface do usuário
-            var likesCountElement = document.getElementById('likes-count-' + photoId);
-            var currentLikes = parseInt(likesCountElement.innerText);
-            likesCountElement.innerText = (currentLikes + 1) + ' likes';
-        }
-
-
         function mostrarFotosGaleria() {
             var galeria = document.getElementById('galeria');
             var photos = galeria.getElementsByTagName('img');
@@ -200,4 +214,3 @@
     </script>
 </body>
 </html>
-ChatGPT
