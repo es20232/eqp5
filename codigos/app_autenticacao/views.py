@@ -9,6 +9,9 @@ from .forms import EditForm,UsuarioCreationForm,UsuarioLoginForm,Form_editar_inf
 import uuid
 from django.urls import reverse
 from django.db.models import Q
+from django.http import JsonResponse
+
+
 
 @login_required
 def dashboard_view(request):
@@ -85,6 +88,7 @@ def profile_view(request, username=None):
         #'followers_count': followers_count,
         #'posts_paginator': posts_paginator,
         #'follow_status': follow_status
+        'excluir_foto_url': reverse('excluir_foto', kwargs={'photo_id': 0}),  # Substitua '0' pelo valor apropriado
     }
 
     return render(request, 'meu_app/perfil.html', context)
@@ -238,3 +242,14 @@ def like_post(request, post_id):
     return redirect('perfil', username=post.user.username)
 
 
+def excluir_foto(request, photo_id):
+    # Recupera a foto do banco de dados
+    photo = get_object_or_404(Photo, pk=photo_id)
+
+    # Verifica se o usuário logado é o proprietário da foto
+    if request.user == photo.user:
+        # Exclui a foto do banco de dados
+        photo.delete()
+        return JsonResponse({'mensagem': 'Foto excluída com sucesso.'})
+    else:
+        return JsonResponse({'erro': 'Você não tem permissão para excluir esta foto.'}, status=403)

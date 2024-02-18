@@ -16,6 +16,8 @@ urlpatterns = [
     path('editar_info/', views.editar_info, name='editar_info'),
     path('postar_foto/<int:photo_id>/', views.postar_foto, name='postar_foto'),
     path('like/<int:post_id>/', views.like_post, name='like_post'),
+    path('excluir_foto/<int:photo_id>/', views.excluir_foto, name='excluir_foto'),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
