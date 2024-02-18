@@ -47,13 +47,22 @@ body {
 }
 
 .imagem-galeria img {
-    max-width: 100%; /* Garante que a imagem não ultrapasse a largura do contêiner */
-    max-height: 100%; /* Garante que a imagem não ultrapasse a altura do contêiner */
-    width: 250px; /* Define a largura da imagem como automática para manter a proporção */
-    height: 250px; /* Define a altura da imagem como automática para manter a proporção */
-    object-fit: cover; /* Garante que a imagem mantenha sua proporção, cortando o excesso se necessário */
+    max-width: 200px; /* Defina o valor desejado */
+    max-height: 200px; /* Defina o valor desejado */
+    width: auto;
+    height: auto;
+    object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
 }
 
+
+
+.post img {
+    max-width: 300px; /* Defina o valor desejado */
+    max-height: 300px; /* Defina o valor desejado */
+    width: auto;
+    height: auto;
+    object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
+}
 
 .avatar {
     width: 100px;
