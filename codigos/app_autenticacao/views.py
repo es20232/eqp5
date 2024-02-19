@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Usuario, PasswordResetToken, Photo, Post
-from .forms import EditForm,UsuarioCreationForm,UsuarioLoginForm,Form_editar_informacoes,PhotoForm,PostForm
+from .forms import EditForm,UsuarioCreationForm,UsuarioLoginForm,Form_editar_informacoes,PhotoForm,PostForm,ComentarioForm
 import uuid
 from django.urls import reverse
 from django.db.models import Q
@@ -92,6 +92,34 @@ def profile_view(request, username=None):
     }
 
     return render(request, 'meu_app/perfil.html', context)
+@login_required
+def exibir_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    form = ComentarioForm()
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.post = post
+            comentario.autor = request.user
+            comentario.save()
+            return redirect('exibir_post', post_id=post_id)
+    return render(request, 'meu_app/post.html', {'post': post, 'form': form})
+
+@login_required
+def adicionar_comentario(request, post_id):
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            # Salvando o comentário no banco de dados
+            novo_comentario = form.save(commit=False)
+            novo_comentario.autor = request.user
+            novo_comentario.post_id = post_id
+            novo_comentario.save()
+            return redirect('exibir_post', post_id=post_id)
+    else:
+        form = ComentarioForm()
+    return render(request, 'meu_app/adicionar_comentario.html', {'form': form})
 
 @login_required
 def postar_foto(request, photo_id):

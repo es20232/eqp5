@@ -69,13 +69,11 @@
             <button class="btn btn-primary" id="mostrarGaleriaBtn" onclick="mostrarGaleria()">Galeria</button>
         {% endif %}
     </div>
-
+    {% if usuario == request.user %}
     <form id="formGaleria" method="post" enctype="multipart/form-data" style="display: none;">
         {% csrf_token %}
         {{ photo_form.image }}
-        {% if usuario == request.user %}
             <p><button type="submit">Adicionar foto na Galeria</button></p>
-        {% endif %}
     </form>
 
     <div class="galeria-container" id="galeria">
@@ -90,20 +88,23 @@
                     <button class="btn-excluir" onclick="excluirFoto('{{ photo.id }}')">Excluir</button>
                     {% endif %}
                     <div class="like-container">
-                        <button class="btn-like" onclick="likePhoto({{ photo.id }})">Like</button>
+                        <button class="btn-like" onclick="likePhoto('{{ photo.id }}')">Like</button>
                         <span id="likes-count-{{ photo.id }}">0 likes</span>
                     </div>
                 </div>
             {% endif %}
         {% endfor %}
     </div>
+    {% endif %}
 
     <br>
     <div class="posts-container" id="posts" style="display: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
         {% for post in posts %}
             <div class="post" style="width: 100%; height: auto;">
-                {% if post.photo.image %}
-                    <img src="{{ post.photo.image.url }}" alt="Photo">
+                {% if post.conteudo %}
+                    <a href="{% url 'exibir_post' post.id %}">
+                        <img src="{{ post.photo.image.url }}">
+                    </a>
                     <p>{{ post.conteudo }}</p>
                 {% endif %}
             </div>
@@ -184,6 +185,8 @@
             formGaleria.style.display = 'block';
 
             // Certifique-se de ocultar o formulário de postagem
+
+            
             var formPostagem = document.getElementById('formPostagem');
             formPostagem.style.display = 'none';
         }

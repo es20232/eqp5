@@ -17,6 +17,8 @@ urlpatterns = [
     path('postar_foto/<int:photo_id>/', views.postar_foto, name='postar_foto'),
     path('like/<int:post_id>/', views.like_post, name='like_post'),
     path('excluir_foto/<int:photo_id>/', views.excluir_foto, name='excluir_foto'),
+    path('adicionar_comentario/<int:post_id>/', views.adicionar_comentario, name='adicionar_comentario'),
+    path('post/<int:post_id>/', views.exibir_post, name='exibir_post'),
 
 ]
 

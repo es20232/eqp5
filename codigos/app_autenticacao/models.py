@@ -38,6 +38,15 @@ class Post(models.Model):
     def __str__(self):
         return f"Post {self.id} - {self.user.username}"
 
+class Comentario(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comentarios')
+    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    texto = models.TextField()
+    data_publicacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comentário por {self.autor.username} em {self.data_publicacao}"
+
 
 
 
