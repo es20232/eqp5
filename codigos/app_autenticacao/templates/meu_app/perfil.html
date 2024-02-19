@@ -3,20 +3,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" conteudo="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil | @{{ usuario.username }}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_perfil.css' %}">
+    <style>
+        .galeria-container img {
+            max-width: 200px; /* Defina a largura máxima desejada para as imagens */
+            max-height: 200px; /* Defina a altura máxima desejada para as imagens */
+        }
+    </style>
 </head>
 <body>
-    <div class="profile-container">
-        {% if usuario.photo %}
-            <img class="avatar" src="{{ usuario.photo.url }}" alt="Avatar">
-        {% else %}
-            <div class="avatar no-photo"></div>
-        {% endif %}
-
-        <div id="editarPerfilBtn" {% if usuario == request.user %} onclick="mostrarBotoes()" {% endif %}>
-            {% if usuario == request.user %}Editar Perfil{% endif %}
+    <div class="profile-container" style="display: flex; align-items: center;">
+        <div class="avatar-container">
+            {% if usuario.photo %}
+                <img class="avatar" src="{{ usuario.photo.url }}" alt="Avatar" style="margin-right: 10px;">
+            {% else %}
+                <div class="avatar no-photo"></div>
+            {% endif %}
         </div>
 
         <div id="botoesEditarPerfil" style="display: none;">
@@ -24,81 +28,181 @@
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.photo }}
-                    <button type="submit">Atualizar Foto</button>
+                    <button class="btn btn-primary" type="submit">Atualizar Foto</button>
                 </form>
             {% endif %}
         </div>
 
-        <div class="username">{{ usuario.username }}</div>
-        <div class="name">{{ usuario.name }}</div>
-        <p class="bio">{{ usuario.bio }}</p>
-        <div class="additional-info">
-            <p>{{ usuario.email }}</p>
-        </div>
-
-        <div>
-            {% if usuario == request.user %}
-                <a href="{% url 'editar_info' %}" class="btn btn-primary">Editar informações</a>
+        <div class="profile-user-name">
+            {% if usuario.username %}
+                <h2 class="profile-user-name">{{ usuario.username }}</h2>
             {% endif %}
+            <h5 style="font-size: 15px;" class="profile-user-name">@{{usuario.username}}</h5>
+
+            <div class="profile-bio" style="margin-top:auto">
+                {% if usuario.bio %}
+                    <p><span class="profile-real-name"></span>◉ {{usuario.bio}}</p>
+                {% endif %}
+            </div>
+
+            <div style="display: flex; justify-content: center; margin-bottom: 10px;">
+                <div id="editarPerfilBtn" {% if usuario == request.user %} onclick="mostrarFormEditarFotoPerfil()" {% endif %}>
+                    {% if usuario == request.user %}
+                        <button class="btn btn-primary" type="submit" style="font-size: 15px;">Editar Foto de Perfil</button>
+                    {% endif %}
+                </div>
+                
+                <div style="margin-left: 10px; margin-top: 10px;">
+                    {% if usuario == request.user %}
+                        <a style="text-decoration: none; width:35%;" href="{% url 'editar_info' %}" class="btn btn-primary">Editar informações</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <br>
         </div>
     </div>
+    <br>
 
-    <div>
+    <div class="profile-user-settings" style="margin-left: 600px">
+        <button class="btn btn-primary" id="mostrarPostsBtn" onclick="mostrarPosts()">Posts</button>
         {% if usuario == request.user %}
-            <button id="mostrarGaleriaBtn" onclick="mostrarGaleria()">Galeria</button>
+            <button class="btn btn-primary" id="mostrarGaleriaBtn" onclick="mostrarGaleria()">Galeria</button>
         {% endif %}
-        <button id="mostrarPostsBtn" onclick="mostrarPosts()">Posts</button>
-        
     </div>
-    
+    {% if usuario == request.user %}
     <form id="formGaleria" method="post" enctype="multipart/form-data" style="display: none;">
         {% csrf_token %}
         {{ photo_form.image }}
-        {% if usuario == request.user %}
             <p><button type="submit">Adicionar foto na Galeria</button></p>
-        {% endif %}
     </form>
-    
-    <div class="galeria-container" id="galeria" style="display: none;">
+
+    <div class="galeria-container" id="galeria">
         {% for photo in photos %}
             {% if photo.image %}
-                <a href="{% url 'postar_foto' photo.id %}">
-                    <img src="{{ photo.image.url }}" alt="Photo">
-                </a>
+                <div class="imagem-galeria">
+                    <a href="{% url 'postar_foto' photo.id %}">
+                        <img src="{{ photo.image.url }}" alt="Photo">
+                    </a>
+                    <!-- Adicionando botão de exclusão -->
+                    {% if usuario == photo.user %}
+                    <button class="btn-excluir" onclick="excluirFoto('{{ photo.id }}')">Excluir</button>
+                    {% endif %}
+                    <div class="like-container">
+                        <button class="btn-like" onclick="likePhoto('{{ photo.id }}')">Like</button>
+                        <span id="likes-count-{{ photo.id }}">0 likes</span>
+                    </div>
+                </div>
             {% endif %}
         {% endfor %}
     </div>
+    {% endif %}
 
-    <div class="posts-container" id="posts" style="display: none;">
+    <br>
+    <div class="posts-container" id="posts" style="display: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
         {% for post in posts %}
-            <div class="post">
-                {% if post.photo.image %}
-                    <img src="{{ post.photo.image.url }}" alt="Photo">
-                    <p>Descrição: {{ post.conteudo }}</p>
+            <div class="post" style="width: 100%; height: auto;">
+                {% if post.descricao %}
+                    <a href="{% url 'exibir_post' post.id %}">
+                        <img src="{{ post.photo.image.url }}">
+                    </a>
+                    <p>{{ post.descricao }}</p>
                 {% endif %}
             </div>
         {% endfor %}
     </div>
-    
+
     <form id="formPostagem" method="post" enctype="multipart/form-data" style="display: none;">
         {% csrf_token %}
         {{ post_form.image }}
-        {{ post_form.conteudo }} <!-- descricao da imagem que o usuario preenche -->
-        <button type="submit">Postar Foto</button>
+        {{ post_form.descricao }} <!-- descricao da imagem que o usuario preenche -->
+        <button class="btn btn-primary" type="submit">Postar Foto</button>
     </form>
-    
+
     <script>
-        // botão de carregar foto
-        document.getElementById('carregar-foto-btn').addEventListener('click', function() {
-            document.querySelector('form').style.display = 'block';
+        
+
+        // Dicionário para manter o controle de quais fotos cada usuário curtiu
+        var likes = {};
+
+        function likePhoto(photoId) {
+            // Verifica se o usuário já deu like nesta foto
+            if (likes[photoId]) {
+                // Se sim, remove o like
+                delete likes[photoId];
+            } else {
+                // Se não, verifica se o usuário já deu like em outra foto
+                for (var otherPhotoId in likes) {
+                    if (likes.hasOwnProperty(otherPhotoId)) {
+                        // Se já deu like em outra foto, remove o like dessa foto
+                        delete likes[otherPhotoId];
+                    }
+                }
+            // Adiciona o like na foto atual
+            likes[photoId] = true;
+            }
+
+            // Atualiza a contagem de likes na interface do usuário
+            updateLikesCount(photoId);
+        }
+
+        function updateLikesCount(photoId) {
+            // Obtém o elemento que exibe a contagem de likes
+            var likesCountElement = document.getElementById('likes-count-' + photoId);
+
+            // Obtém o número atual de likes
+            var likesCount = Object.keys(likes).length;
+
+            // Atualiza o texto para refletir o número atual de likes
+            likesCountElement.innerText = likesCount + (likesCount === 1 ? ' like' : ' likes');
+        }
+
+            // Função para ocultar os posts e exibir a galeria ao carregar a página
+        window.addEventListener('DOMContentLoaded', function() {
+            var postsContainer = document.getElementById('posts');
+            var galeria = document.getElementById('galeria');
+            var formGaleria = document.getElementById('formGaleria');
+
+           // Oculta o container de posts
+            postsContainer.style.display = 'none';
+
+           // Exibe o container de galeria e o formulário de galeria
+            galeria.style.display = 'block';
+            formGaleria.style.display = 'block';
         });
-        // botão de editar informações
-        document.getElementById('editar-informacoes').addEventListener('click', function() {
-            document.getElementById('form-editar-informacoes').style.display = 'block';
-            this.style.display = 'none';
-        });
-        // botao para trocar a foto de perfil
-        function mostrarBotoes() {
+
+        // Função para alternar entre exibir os posts e a galeria
+        function mostrarPosts() {
+            var postsContainer = document.getElementById('posts');
+            var galeria = document.getElementById('galeria');
+            var formGaleria = document.getElementById('formGaleria');
+
+           // Exibe o container de posts e oculta a galeria e o formulário de galeria
+            postsContainer.style.display = 'block';
+            galeria.style.display = 'none';
+            formGaleria.style.display = 'none';
+        }
+
+       // Função para exibir a galeria e ocultar os posts
+        function mostrarGaleria() {
+            var postsContainer = document.getElementById('posts');
+            var galeria = document.getElementById('galeria');
+            var formGaleria = document.getElementById('formGaleria');
+
+           // Exibe o container de galeria e o formulário de galeria, e oculta os posts
+            postsContainer.style.display = 'none';
+            galeria.style.display = 'block';
+            formGaleria.style.display = 'block';
+
+           // Certifique-se de ocultar o formulário de postagem
+
+           
+            var formPostagem = document.getElementById('formPostagem');
+            formPostagem.style.display = 'none';
+        }
+
+
+        function mostrarFormEditarFotoPerfil() {
             var botoesEditarPerfil = document.getElementById('botoesEditarPerfil');
             if (botoesEditarPerfil.style.display === 'none' || botoesEditarPerfil.style.display === '') {
                 botoesEditarPerfil.style.display = 'block';
@@ -106,63 +210,76 @@
                 botoesEditarPerfil.style.display = 'none';
             }
         }
-    
-        function mostrarGaleria() {
-            var galeria = document.getElementById('galeria');
-            var formGaleria = document.getElementById('formGaleria');  
 
-            if (galeria.style.display === 'none' || galeria.style.display === '') {
-                galeria.style.display = 'block';
-                formGaleria.style.display = 'block';  
-            } else {
-                galeria.style.display = 'none';
-                formGaleria.style.display = 'none'; 
+        function excluirFoto(photoId) {
+            if (confirm("Tem certeza de que deseja excluir esta foto?")) {
+                var url = `/excluir_foto/${photoId}/`;
+               
+               // Cria um objeto XMLHttpRequest
+                var xhr = new XMLHttpRequest();
+               
+               // Configura a requisição
+                xhr.open("POST", url);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+               
+               // Define a função a ser chamada quando a resposta da requisição for carregada
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                       // Remove o elemento da foto da galeria após excluir a foto
+                        var photoElement = document.getElementById('photo-' + photoId);
+                        if (photoElement) {
+                            photoElement.parentNode.removeChild(photoElement);
+                        }
+                       // Atualiza a página para refletir o estado atual da aplicação
+                        window.location.reload();
+                    } else {
+                        console.error('Erro ao excluir a foto.');
+                    }
+                };
+               
+               // Envie a requisição
+                xhr.send();
             }
         }
+       
+       
+
 
         function postarFoto() {
             var formPostagem = document.getElementById('formPostagem');
             var galeria = document.getElementById('galeria');
-    
+
             if (formPostagem.style.display === 'none' || formPostagem.style.display === '') {
                 formPostagem.style.display = 'block';
-                mostrarFotosGaleria(); 
+                mostrarFotosGaleria();
             } else {
                 formPostagem.style.display = 'none';
             }
         }
-    
+
         function mostrarFotosGaleria() {
             var galeria = document.getElementById('galeria');
             var photos = galeria.getElementsByTagName('img');
             var formPostagem = document.getElementById('formPostagem');
-    
+       
+           // Oculta o formulário de postagem ao mostrar fotos na galeria
+            formPostagem.style.display = 'none';
+       
             for (var i = 0; i < photos.length; i++) {
                 photos[i].addEventListener('click', function() {
                     document.getElementById('chosenPhotoInput').value = this.src;
-                    alert('Foto escolhida: ' + this.src);                              
-                    formPostagem.style.display = 'block';
+                    alert('Foto escolhida: ' + this.src);
+                   // Mostra o formulário de postagem apenas se estiver na aba de galeria
+                    if (galeria.style.display !== 'none') {
+                        formPostagem.style.display = 'block';
+                    }
                 });
             }
             if (photos.length === 0) {
                 formPostagem.style.display = 'none';
             }
         }
-    
-        function mostrarPosts() {
-            var postsContainer = document.getElementById('posts');
-            var galeria = document.getElementById('galeria');
-            var formGaleria = document.getElementById('formGaleria');
-    
-            if (postsContainer.style.display === 'none' || postsContainer.style.display === '') {
-                postsContainer.style.display = 'block';
-                galeria.style.display = 'none';  
-                formGaleria.style.display = 'none';  
-            } else {
-                postsContainer.style.display = 'none';
-            }
-        }
-
     </script>
 </body>
 </html>

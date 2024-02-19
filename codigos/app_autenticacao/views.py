@@ -5,19 +5,21 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Usuario, PasswordResetToken, Photo, Post
-from .forms import EditForm,UsuarioCreationForm,UsuarioLoginForm,Form_editar_informacoes,PhotoForm,PostForm
+from .forms import EditForm,UsuarioCreationForm,UsuarioLoginForm,Form_editar_informacoes,PhotoForm,PostForm,ComentarioForm
 import uuid
 from django.urls import reverse
 from django.db.models import Q
+from django.http import JsonResponse
 
 @login_required
 def dashboard_view(request):
+    postagens = Post.objects.exclude(photo__isnull=True)
     query = request.GET.get('q')
     if query:
         results = Usuario.objects.filter(Q(username__icontains=query) | Q(nome__icontains=query))
     else:
         results = None  
-    return render(request, 'meu_app/dashboard.html', {'results': results})
+    return render(request, 'meu_app/dashboard.html', {'postagens': postagens, 'results': results})
 
 @login_required
 def profile_view(request, username=None):
@@ -40,8 +42,8 @@ def profile_view(request, username=None):
                 photo_instance.is_public = True
                 photo_instance.save()
             # add copia para posts
-            conteudo = request.POST.get('post_conteudo', '') 
-            post_instance = Post.objects.create(user=user, conteudo=conteudo, photo=photo_instance)
+            descricao = request.POST.get('post_descricao', '') 
+            post_instance = Post.objects.create(user=user, descricao=descricao, photo=photo_instance)
 
             update_session_auth_hash(request, user)
             return redirect('perfil', username=user.username)
@@ -56,9 +58,67 @@ def profile_view(request, username=None):
         post_form = PostForm()
 
     photos = Photo.objects.filter(user=user)
-    posts = Post.objects.filter(user=user).select_related('photo') 
+    posts = Post.objects.filter(user=user).select_related('photo')
+    
+    # Verificar quais posts o usuário curtiu
+    liked_posts = [post.id for post in posts if request.user in post.likes.all()]
 
-    return render(request, 'meu_app/perfil.html', {'usuario': user, 'form': form, 'photo_form': photo_form, 'post_form': post_form, 'photos': photos, 'posts': posts})
+    # Profile Stats -Rayanne
+    posts_count = Post.objects.filter(user=user).count()
+    #following_count = Follow.objects.filter(follower=user).count()
+    #followers_count = Follow.objects.filter(following=user).count()
+    #follow_status = Follow.objects.filter(following=user, follower=request.user).exists()
+
+    # pagination -Rayanne
+    #paginator = Paginator(posts, 8)
+    #page_number = request.GET.get('page')
+    #posts_paginator = paginator.get_page(page_number)
+
+    context = {
+        'usuario': user, 
+        'form': form, 
+        'photo_form': photo_form, 
+        'post_form': post_form, 
+        'photos': photos, 
+        'posts': posts,
+        'posts_count': posts_count,
+        'liked_posts': liked_posts,  # Adicionando a lista de posts curtidos pelo usuário
+        #'following_count': following_count,
+        #'followers_count': followers_count,
+        #'posts_paginator': posts_paginator,
+        #'follow_status': follow_status
+        'excluir_foto_url': reverse('excluir_foto', kwargs={'photo_id': 0}),  # Substitua '0' pelo valor apropriado
+    }
+
+    return render(request, 'meu_app/perfil.html', context)
+@login_required
+def exibir_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    form = ComentarioForm()
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.post = post
+            comentario.autor = request.user
+            comentario.save()
+            return redirect('exibir_post', post_id=post_id)
+    return render(request, 'meu_app/post.html', {'post': post, 'form': form})
+
+@login_required
+def adicionar_comentario(request, post_id):
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            # Salvando o comentário no banco de dados
+            novo_comentario = form.save(commit=False)
+            novo_comentario.autor = request.user
+            novo_comentario.post_id = post_id
+            novo_comentario.save()
+            return redirect('exibir_post', post_id=post_id)
+    else:
+        form = ComentarioForm()
+    return render(request, 'meu_app/adicionar_comentario.html', {'form': form})
 
 @login_required
 def postar_foto(request, photo_id):
@@ -66,8 +126,8 @@ def postar_foto(request, photo_id):
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
-            conteudo = form.cleaned_data['conteudo']
-            post = Post.objects.create(user=request.user, conteudo=conteudo, photo=photo)
+            descricao = form.cleaned_data['descricao']
+            post = Post.objects.create(user=request.user, descricao=descricao, photo=photo)
             return redirect('perfil', username=request.user.username)
     else:
         form = PostForm()
@@ -192,3 +252,31 @@ def redefinir_senha(request, token):
             messages.error(request, 'As senhas não coincidem. Tente novamente.')
             return redirect('redefinir_senha', token=token)
     return render(request, 'password/redefinir_senha.html', {'token': token})
+
+
+@login_required
+def like_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    user = request.user
+
+    if user in post.likes.all():
+        post.likes.remove(user)
+        liked = False
+    else:
+        post.likes.add(user)
+        liked = True
+
+    return redirect('perfil', username=post.user.username)
+
+
+def excluir_foto(request, photo_id):
+    # Recupera a foto do banco de dados
+    photo = get_object_or_404(Photo, pk=photo_id)
+
+    # Verifica se o usuário logado é o proprietário da foto
+    if request.user == photo.user:
+        # Exclui a foto do banco de dados
+        photo.delete()
+        return JsonResponse({'mensagem': 'Foto excluída com sucesso.'})
+    else:
+        return JsonResponse({'erro': 'Você não tem permissão para excluir esta foto.'}, status=403)

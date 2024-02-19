@@ -1,3 +1,11 @@
+/* Reset de estilos padrão do navegador para garantir consistência */
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos gerais para o corpo da página */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #fafafa;
@@ -5,66 +13,132 @@ body {
     padding: 0;
 }
 
+/* Estilo para o container principal do perfil */
 .profile-container {
-    max-width: 600px;
+    max-width: 1380px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    margin-top: 20px;
+    padding: 30px;
+    background-color: #ffffff;
+    border: 1px solid rgba(17, 44, 221, 0.867);
+    margin-top: 30px;
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo para o avatar */
+.avatar-container {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .avatar {
+    max-width: 120px;
+    max-height: 120px;
+    border-radius: 50%;
+}
+
+.no-photo {
     width: 100px;
     height: 100px;
+    background-color: #8a8787; /* Cor de fundo para usuários sem foto */
     border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
 }
 
-.upload-btn-wrapper {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
+/* Estilo para o nome de usuário e bio */
+.profile-user-name {
+    margin-top: auto;
 }
 
-.btn {
-    border: 2px solid #3498db;  
-    color: #3498db;
-    background-color: #fff;
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.btn:hover {
+/* Estilo para os botões de edição de perfil */
+#editarPerfilBtn, .btn-like, .btn-excluir, .btn-primary {
     background-color: #3498db;
     color: #fff;
+    border: none;
+    padding: 3px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 20px;
 }
 
+#editarPerfilBtn:hover, .btn-like:hover, .btn-excluir:hover, .btn-primary:hover {
+    background-color: #2980b9;
+}
 
-.upload-btn-wrapper input[type=file] {
-    font-size: 100px;
+/* Estilo para a seção de configurações do usuário */
+.profile-user-settings {
+    margin-left: 20px;
+}
+
+/* Estilo para os botões de alternar entre posts e galeria */
+#mostrarGaleriaBtn, #mostrarPostsBtn {
+    background-color: #65027d;
+    color: #ffffffc2;
+    border: none;
+    padding: 20px;
+    margin: 50px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#mostrarPostsBtn:hover, #mostrarGaleriaBtn:hover {
+    background-color: #012d86;
+}
+
+/* Estilo para a galeria de fotos */
+.galeria-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+    gap: 20px; /* Espaçamento entre as imagens */
+}
+
+.imagem-galeria {
+    position: relative;
+    overflow: hidden;
+}
+
+.imagem-galeria img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.like-container {
     position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Estilo para os containers de posts */
+.posts-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.post {
+    max-width: 200px; /* Defina o valor desejado */
+    max-height: 200px; /* Defina o valor desejado */
+    width: auto;
+    height: auto;
+    object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
+}
+
+.post img {
+    max-width: 300px; /* Defina o valor desejado */
+    max-height: 300px; /* Defina o valor desejado */
+    width: auto;
+    height: auto;
+    object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
 }
 
 .username {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
-}
-
-.bio {
-    font-size: 16px;
-    margin-bottom: 20px;
-}
-
-.additional-info {
-    font-size: 14px;
-    color: #555;
 }

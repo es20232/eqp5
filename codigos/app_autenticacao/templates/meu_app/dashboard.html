@@ -8,6 +8,10 @@
 <body>
     {% csrf_token %}
     <p>Bem-vindo, {{ usuario.username }}!</p>
+
+    <a href="{% url 'perfil' username=request.user.username %}">Perfil</a>
+    <a href="{% url 'logout' %}">sair</a>
+    
     <div>
         <form method="get" action="{% url 'dashboard' %}">
             {% csrf_token %}
@@ -23,8 +27,14 @@
             {% endfor %}
         </div>
     {% endif %}
+
     
-    <a href="{% url 'perfil' username=request.user.username %}">Perfil</a>
-    <a href="{% url 'logout' %}">sair</a>
+    
+    {% for post in postagens %}
+        {% if post.photo and post.photo.image and post.user != request.user %}
+            <img src="{{ post.photo.image.url }}" alt="User Photo">
+        {% endif %}
+    {% endfor %}
+   
 </body>
 </html>

@@ -15,6 +15,11 @@ urlpatterns = [
     path('upload_perfil/', views.upload_perfil, name='upload_perfil'),
     path('editar_info/', views.editar_info, name='editar_info'),
     path('postar_foto/<int:photo_id>/', views.postar_foto, name='postar_foto'),
+    path('like/<int:post_id>/', views.like_post, name='like_post'),
+    path('excluir_foto/<int:photo_id>/', views.excluir_foto, name='excluir_foto'),
+    path('adicionar_comentario/<int:post_id>/', views.adicionar_comentario, name='adicionar_comentario'),
+    path('post/<int:post_id>/', views.exibir_post, name='exibir_post'),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
