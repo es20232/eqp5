@@ -27,11 +27,9 @@
             {% endfor %}
         </div>
     {% endif %}
-
-    
     
     {% for post in postagens %}
-        {% if post.photo and post.photo.image and post.user != request.user %}
+        {% if post.descricao and post.user != request.user %}
             <img src="{{ post.photo.image.url }}" alt="User Photo">
         {% endif %}
     {% endfor %}
