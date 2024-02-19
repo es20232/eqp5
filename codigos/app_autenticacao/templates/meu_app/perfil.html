@@ -101,11 +101,13 @@
     <div class="posts-container" id="posts" style="display: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
         {% for post in posts %}
             <div class="post" style="width: 100%; height: auto;">
-                {% if post.conteudo %}
+                {% if post.photo.image %}
+                    {% if post.conteudo %}
                     <a href="{% url 'exibir_post' post.id %}">
                         <img src="{{ post.photo.image.url }}">
                     </a>
                     <p>{{ post.conteudo }}</p>
+                    {% endif %}
                 {% endif %}
             </div>
         {% endfor %}
@@ -119,33 +121,42 @@
     </form>
 
     <script>
-        // Dicionário para manter o controle de quais fotos cada usuário curtiu
-        var likes = {};
+        
 
-        function likePhoto(photoId) {
-            // Verifica se o usuário já deu like nesta foto
-            if (likes[photoId]) {
-                // Se sim, remove o like
-                delete likes[photoId];
-            } else {
-                // Se não, adiciona o like
-                likes[photoId] = true;
+         // Dicionário para manter o controle de quais fotos cada usuário curtiu
+    var likes = {};
+
+    function likePhoto(photoId) {
+        // Verifica se o usuário já deu like nesta foto
+        if (likes[photoId]) {
+            // Se sim, remove o like
+            delete likes[photoId];
+        } else {
+            // Se não, verifica se o usuário já deu like em outra foto
+            for (var otherPhotoId in likes) {
+                if (likes.hasOwnProperty(otherPhotoId)) {
+                    // Se já deu like em outra foto, remove o like dessa foto
+                    delete likes[otherPhotoId];
+                }
             }
-
-            // Atualiza a contagem de likes na interface do usuário
-            updateLikesCount(photoId);
+            // Adiciona o like na foto atual
+            likes[photoId] = true;
         }
 
-        function updateLikesCount(photoId) {
-            // Obtém o elemento que exibe a contagem de likes
-            var likesCountElement = document.getElementById('likes-count-' + photoId);
+        // Atualiza a contagem de likes na interface do usuário
+        updateLikesCount(photoId);
+    }
 
-            // Obtém o número atual de likes
-            var likesCount = Object.keys(likes).length;
+    function updateLikesCount(photoId) {
+        // Obtém o elemento que exibe a contagem de likes
+        var likesCountElement = document.getElementById('likes-count-' + photoId);
 
-            // Atualiza o texto para refletir o número atual de likes
-            likesCountElement.innerText = likesCount + (likesCount === 1 ? ' like' : ' likes');
-        }
+        // Obtém o número atual de likes
+        var likesCount = Object.keys(likes).length;
+
+        // Atualiza o texto para refletir o número atual de likes
+        likesCountElement.innerText = likesCount + (likesCount === 1 ? ' like' : ' likes');
+    }
 
         // Função para ocultar os posts e exibir a galeria ao carregar a página
         window.addEventListener('DOMContentLoaded', function() {
