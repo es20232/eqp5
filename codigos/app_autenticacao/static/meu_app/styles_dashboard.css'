@@ -1,0 +1,48 @@
+/* Reset de estilos padrão do navegador para garantir consistência */
+body, h1, h2, h3,h5, p, ul, li {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos gerais para o corpo da página */
+body {
+    font-family: 'Arial', sans-serif;
+    
+    margin: 0;
+    padding: 0;
+}
+.btn{ 
+    background-color: #4ab3c6;
+    color: #fff;
+    border: none;
+    padding: 3px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+
+.btn:hover{
+    background-color: #3498db;
+}
+
+.container{
+    max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-top: 50px;
+  height: 550px;
+}
+.content{
+    display: flex;
+    align-items: center; 
+
+}
+
+.feed img{
+    max-width: 950px;
+}

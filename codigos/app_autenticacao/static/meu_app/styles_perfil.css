@@ -1,5 +1,5 @@
 /* Reset de estilos padrão do navegador para garantir consistência */
-body, h1, h2, h3, p, ul, li {
+body, h1, h2, h3,h5, p, ul, li {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -8,35 +8,89 @@ body, h1, h2, h3, p, ul, li {
 /* Estilos gerais para o corpo da página */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #fafafa;
+    background-color: #438086;
     margin: 0;
     padding: 0;
 }
 
+a {
+    color: #fff; /* Define a cor da fonte para vermelho */
+    text-decoration: none; /* Remove o sublinhado padrão */
+}
+
+/* Estilo para o link quando estiver em hover (passando o mouse sobre ele) */
+a:hover {
+    color: #fff; /* Define a cor da fonte para azul quando o mouse estiver sobre o link */
+}
+.container{
+    max-width: 950px;
+    max-height:100%;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 50px;
+    height: auto;
+    overflow:hidden;
+}
 /* Estilo para o container principal do perfil */
 .profile-container {
-    max-width: 1380px;
+    display: flex;
+    align-items: center; 
+}
+
+/* Estilo para o container principal do perfil 
+.profile-container {
+    max-width: 600px;
+    max-height: 1000px;
     margin: 0 auto;
     padding: 30px;
-    background-color: #ffffff;
-    border: 1px solid rgba(17, 44, 221, 0.867);
+    border: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: 30px;
-    margin-left: 30px;
+    margin-left: center;
     display: flex;
     align-items: center;
+}*/
+
+.btn-editar{
+    display: flex;
+    flex-direction: column; /* Define a orientação dos itens para vertical */
+    align-items: center;
+    margin-left: 500px;
+    margin-bottom: 50px;
+    color:#fff;
+    max-width: max-content;
+}
+
+.btn {
+    margin-bottom: 10px; /* Adiciona um espaço entre os botões */
+}
+
+.profile-user-name{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.editarInfo, #editarPerfilBtn{
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    max-width: min-content;
+
 }
 
 /* Estilo para o avatar */
 .avatar-container {
     margin-right: 10px;
-    display: flex;
-    align-items: center;
+    margin-left: 30px;
 }
 
 .avatar {
     max-width: 120px;
     max-height: 120px;
-    border-radius: 50%;
+    border-radius: 80%;
 }
 
 .no-photo {
@@ -46,12 +100,13 @@ body {
     border-radius: 50%;
 }
 
-/* Estilo para o nome de usuário e bio */
+/* Estilo para o nome de usuário e bio 
 .profile-user-name {
     margin-top: auto;
-}
+}*/
 
 /* Estilo para os botões de edição de perfil */
+<<<<<<< HEAD
 #editarPerfilBtn, .btn-primary {
     background-color: #3498db;
     color: #fff;
@@ -65,6 +120,10 @@ body {
 
 .btn-like, .btn-excluir {
     background-color: #3498db;
+=======
+#editarPerfilBtn, .btn-like, .btn-excluir, .btn-primary, .editar-btn {
+    background-color: #4ab3c6;
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
     color: #fff;
     border: none;
     padding: 3px;
@@ -73,17 +132,21 @@ body {
     border-radius: 20px;
 }
 
+
 #editarPerfilBtn:hover, .btn-like:hover, .btn-excluir:hover, .btn-primary:hover {
-    background-color: #2980b9;
+    background-color: #3498db;
 }
 
 /* Estilo para a seção de configurações do usuário */
 .profile-user-settings {
-    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 /* Estilo para os botões de alternar entre posts e galeria */
 #mostrarGaleriaBtn, #mostrarPostsBtn {
+<<<<<<< HEAD
     background-color: #1b016b;
     color: #ffffffc2;
     border: none;
@@ -95,14 +158,44 @@ body {
     height: auto;
     cursor: pointer;
     border-radius: 10px;
+=======
+    color: #4ab3c6;
+    background-color: #fff;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 2px;
+    align-items: center;
+    margin-left: 40px;
+    font-size: 20px;
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
 }
 
-#mostrarPostsBtn:hover, #mostrarGaleriaBtn:hover {
-    background-color: #012d86;
+
+
+
+
+.btn-pg{
+    border-top-style: solid;
+    border-top-color: #f0f0f05d;
+    border-bottom-color: #f0f0f05d;
+    border-top-width: 1px;
+    justify-content: space-around;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: #4ab3c6;
 }
 
+/*#mostrarPostsBtn:hover, #mostrarGaleriaBtn:hover {
+    background-color: #4ab3c6;
+}*/
+
 /* Estilo para a galeria de fotos */
+<<<<<<< HEAD
 /* Estilo para a galeria de fotos */
+=======
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
 .imagem-galeria, .interage-ft {
     display: flex;
     align-items: center;
@@ -129,23 +222,72 @@ body {
     box-sizing: border-box; 
     object-fit: cover;
     display: block;
+<<<<<<< HEAD
+=======
+}
+
+#ed-btn{
+    font-size: 15px; 
+    padding:11px; 
+    color: #fff; 
+}
+.a{
+    color:#fff;
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
 }
 .like-container {
-    position: absolute;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
     background-color: rgba(255, 255, 255, 0.8);
     padding: 5px;
     border-radius: 5px;
 }
 
+<<<<<<< HEAD
+=======
+/* Estilo para os containers de posts */
+.posts-container {
+    max-width: 950px; 
+    margin: 0 auto; /* Centraliza a div horizontalmente */
+    display: flex;
+    flex-wrap: wrap; /* Permite que os elementos flexíveis sejam quebrados em várias linhas */
+    justify-content: space-between; 
+}
+
+.post {
+    max-width: 950px; /* Defina o valor desejado */
+    max-height: 100%; /* Defina o valor desejado */
+    /*display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;*/
+    cursor: pointer;
+    object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
+    overflow-x: hidden;
+    
+}
+
+.post img {
+    /*max-width: 100%;  Defina o valor desejado */
+    /*max-height: 100%;  Defina o valor desejado */
+    /*width: auto;
+    height: auto;
+    object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
+
+    width: calc((950px/ 3) - 10px); /* Calcula a largura das imagens para ocupar um terço da largura da div, com um espaçamento de 10px entre elas */
+    margin-bottom: 20px; /* Espaçamento entre as linhas */
+    box-sizing: border-box; 
+    object-fit: cover;
+    display: block;
+}
+
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
 .username {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
+<<<<<<< HEAD
 /* Estilo para os containers de posts */
 .posts-container {
     max-width: 950px; 
@@ -184,3 +326,9 @@ body {
 
 
 
+=======
+.postar-ft{
+    display: flex;
+    align-items: center;
+}
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b

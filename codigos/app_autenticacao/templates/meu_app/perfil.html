@@ -15,6 +15,7 @@
 
 </head>
 <body>
+<<<<<<< HEAD
     <div class="profile-container">
         <div class="avatar-container">
             {% if usuario.photo %}
@@ -108,13 +109,132 @@
         </div>
         {% endfor %}
     </div>
+=======
+    <div class="container">
+        <div class="profile-container">
 
-    <form id="formPostagem" method="post" enctype="multipart/form-data" style="display: none;">
-        {% csrf_token %}
-        {{ post_form.image }}
-        {{ post_form.descricao }} <!-- descricao da imagem que o usuario preenche -->
-        <button class="btn btn-primary" type="submit">Postar Foto</button>
-    </form>
+            <div class="avatar-container">
+                {% if usuario.photo %}
+                    <img class="avatar" src="{{ usuario.photo.url }}" alt="Avatar" style="margin-right: 10px;">
+                {% else %}
+                    <div class="avatar no-photo"></div>
+                {% endif %}
+            </div>
+
+            <div id="botoesEditarPerfil" style="display: none;">
+                {% if usuario == request.user %}
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.photo }}
+                        <button class="btn btn-primary" type="submit">Atualizar Foto</button>
+                    </form>
+                {% endif %}
+            </div>
+
+            <div class="profile-user-name">
+
+                <div class="profile-bio">
+                    {% if usuario.username %}
+                        <h2 class="profile-user-name">{{ usuario.name }}</h2><br>
+                    {% endif %}
+                    <h5 style="font-size: 15px;">@{{usuario.username}}</h5>
+                    {% if usuario.bio %}
+                        <p><span class="profile-real-name"></span>◉ {{usuario.bio}}</p>
+                    {% endif %}
+                </div>
+                <br>
+                <div class="btn-editar">
+                    <div id="editarPerfilBtn" {% if usuario == request.user %} onclick="mostrarFormEditarFotoPerfil()" {% endif %}>
+                        {% if usuario == request.user %}
+                            <button class="btn btn-primary" type="submit" style="font-size: 15px;">Alterar Foto de Perfil</button>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="editarInfo">
+                        {% if usuario == request.user %}
+                        <button id="ed-btn" class="editar-btn">
+                            <a href="{% url 'editar_info' %}">Editar Informações</a>
+                        </button>
+                        {% endif %}
+                    </div>
+
+                    <button id="ed-btn" class="editar-btn">
+                        <a href="{% url 'dashboard' %}">Página Inicial</a>
+                    </button>
+                </div>
+
+                <br>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="btn-pg">
+            <div class="profile-user-settings">
+                <button  id="mostrarPostsBtn" onclick="mostrarPosts()">Postagens</button>
+                {% if usuario == request.user %}
+                    <button  id="mostrarGaleriaBtn" onclick="mostrarGaleria()">Galeria</button>
+                {% endif %}
+            </div>
+        </div>
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
+
+        <div class="add-ft-galeria">
+            {% if usuario == request.user %}
+            <form id="formGaleria" method="post" enctype="multipart/form-data" style="display: none;">
+                {% csrf_token %}
+                {{ photo_form.image }}
+                    <p><button class="btn btn-primary" type="submit">Adicionar foto na Galeria</button></p>
+            </form>
+        </div>    
+
+        <div class="galeria-container" id="galeria">
+            {% for photo in photos %}
+                {% if photo.image %}
+                    <div class="imagem-galeria">
+                        <a href="{% url 'postar_foto' photo.id %}">
+                            <img src="{{ photo.image.url }}" alt="Photo">
+                        </a>
+                    </div>
+
+                    <div class="interage-ft">
+                        {% if usuario == photo.user %}
+                        <button class="btn-excluir" onclick="excluirFoto('{{ photo.id }}')">Excluir</button>
+                        {% endif %}
+                        <div class="like-container">
+                            <button class="btn-like" onclick="likePhoto('{{ photo.id }}')">Like</button>
+                            <span id="likes-count-{{ photo.id }}">0 likes</span>
+                        </div>
+                    </div>
+                    
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <br>
+        <div class="posts-container" id="posts" style="display:grid">  
+            {% for post in posts %}
+                <div class="post">
+                    {% if post.descricao %}
+                        <a href="{% url 'exibir_post' post.id %}">
+                            <img src="{{ post.photo.image.url }}">
+                        </a>
+                        <p style="font-weight: bold;">{{ usuario.username }}:</p><p>{{ post.descricao }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div><br>
+
+        <div class="postar-ft">
+            <form id="formPostagem" method="post" enctype="multipart/form-data" style="display: none; width=180px; height=180px">
+                {% csrf_token %}
+                {{ post_form.image }}
+                {{ post_form.descricao }} <!-- descricao da imagem que o usuario preenche -->
+                <button class="btn btn-primary" type="submit">Postar Foto</button>
+            </form>
+        </div>
+            
+    </div>
 
     <script>
 
@@ -139,7 +259,7 @@
             var formGaleria = document.getElementById('formGaleria');
 
            // Exibe o container de posts e oculta a galeria e o formulário de galeria
-            postsContainer.style.display = 'block';
+            postsContainer.style.display = 'flex';
             galeria.style.display = 'none';
             formGaleria.style.display = 'none';
         }
@@ -152,8 +272,8 @@
 
            // Exibe o container de galeria e o formulário de galeria, e oculta os posts
             postsContainer.style.display = 'none';
-            galeria.style.display = 'block';
-            formGaleria.style.display = 'block';
+            galeria.style.display = 'flex';
+            formGaleria.style.display = 'flex';
 
            // Certifique-se de ocultar o formulário de postagem
 

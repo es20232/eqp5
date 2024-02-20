@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 <!-- esse html é o que é carregado ao entrar em post>escolher foto pra comentar>comentar -->
+=======
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +12,19 @@
     <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_post.css' %}">
 </head>
 <body>
+    <style>
+        .editar-btn a {
+            color: white;
+        }
+    </style>
+    <div class="comment-container">
+        <div class="content">
+            <div id="comment">
+                <button id="ed-btn" class="editar-btn">
+                    <a style="text-decoration: none;" href="{% url 'perfil' username=request.user.username %}">Perfil</a>
+                </button>
 
+<<<<<<< HEAD
     <style>
         .editar-btn a {
             color: white;
@@ -35,10 +50,20 @@
                     {% csrf_token %}
                     {{ form.as_p }}
 
+=======
+            <h1>@{{ post.user.username }}</h1>
+            <img src="{{ post.photo.image.url }}" style="max-width:100%; object-fit: cover;overflow-x: hidden;">
+            <p>{{ post.user.username }}: {{ post.descricao }}</p>
+                <form method="post" action="{% url 'adicionar_comentario' post.id %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
                     <button id="ed-btn" class="editar-btn" type="submit">Adicionar Comentário </button>
                 </form>
             </div>
             {% for comentario in post.comentarios.all %}
+<<<<<<< HEAD
             <p>@{{ comentario.autor.username }}: {{ comentario.texto }} - {{ comentario.data_publicacao}}</p>
 
             {% endfor %}
@@ -85,5 +110,12 @@
     
 </script>
 
+=======
+            <p>@{{ comentario.autor.username }}: {{ comentario.texto }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
 </body>
 </html>

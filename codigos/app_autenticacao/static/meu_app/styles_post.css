@@ -47,14 +47,23 @@ body {
 }
 
 .content {
+<<<<<<< HEAD
     width: 650px;
     min-height: 650px;
+=======
+    width: 500px;
+    min-height: 560px;
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
     margin: 0 auto;
     position: relative;
   }
 
   .comment-container {
+<<<<<<< HEAD
     max-width: 800px;
+=======
+    max-width: 500px;
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
     margin: auto;
     padding: 20px;
     background-color: #fff;
@@ -76,7 +85,11 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
     position: relative;
+<<<<<<< HEAD
     width: 50%;
+=======
+    width: 90%;
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
   }
   
   input[type="submit"] {

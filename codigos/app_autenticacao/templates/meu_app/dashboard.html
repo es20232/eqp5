@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+<<<<<<< HEAD
     <style>
         /* Estilo para o botão "Sair" e botão de perfil */
         #logout-link, #perfil-link {
@@ -110,6 +112,50 @@
                 <img src="{{ post.photo.image.url }}" alt="User Photo">
             {% endif %}
         {% endfor %}
+=======
+    <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_dashboard.css' %}">
+    
+</head>
+<body>
+    <div class="container" style="max-width:500px">
+        <div class="conteudo">
+            <div class="cont">
+                {% csrf_token %}
+                <h1>Bem-vindo, {{ usuario.username }}!</h1>
+
+                <button class="btn">
+                    <a href="{% url 'perfil' username=request.user.username %}" >Perfil</a>
+                </button>
+                <button class="btn">
+                    <a href="{% url 'logout' %}" class="btn btn-primary">Sair</a>
+                </button>
+                
+                <div class="pesquisar" style="display=flex; align-items: center;">
+                    <form method="get" action="{% url 'dashboard' %}">
+                        {% csrf_token %}
+                        <input type="text" name="q" placeholder="Pesquisar">
+                        <button type="submit">Buscar</button>
+                    </form>
+                </div>
+
+                {% if results %}
+                    <div>
+                        {% for result in results %}
+                            <li><a href="{% url 'perfil' username=result.username %}">{{ result.username }}</a></li>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <div class="feed" style="width=50px; height:50px">
+                    {% for post in postagens %}
+                        {% if post.descricao and post.user != request.user %}
+                            <img src="{{ post.photo.image.url }}" alt="User Photo" style="width=20px; height=20px">
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+>>>>>>> 36c42be351e7ab9fd53cdc8945e11838eaaea82b
     </div>
    
 </body>
