@@ -1,18 +1,88 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #438086;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .image-container {
+            border-radius: 8px;
+            overflow: hidden;
+            width: 100%;
+            text-align: center;
+        }
+
+        .formatted-photo {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .form-container {
+            width: 100%; /* Garante que a div ocupa 100% da largura da container */
+        }
+
+        .form-container form {
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #4ab3c6;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        button:hover {
+            background-color: #3498db;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #3498db;
+        }
+    </style>
 </head>
 <body>
 
-    <img src="{{ photo.image.url }}" alt="Photo">
+    <div class="container">
+        <div class="image-container">
+            <img src="{{ photo.image.url }}" alt="Photo" class="formatted-photo">
+        </div>
+    </div>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Postar</button>
-    </form>
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Postar</button>
+        </form>
+    </div>
 
     <a href="{% url 'perfil' username=request.user.username %}">voltar</a>
 </body>

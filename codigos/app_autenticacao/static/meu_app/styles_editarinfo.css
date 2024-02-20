@@ -1,0 +1,68 @@
+*, *:before, *:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #438086;
+}
+
+#form-alterar {
+    max-width: 450px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 50px;
+    height: auto;
+}
+
+#form-alterar h2 {
+    font-size: 24px;
+    color: #066a75;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.additional-info label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #4ab3c6;
+}
+
+.additional-info input, .additional-info textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#id_password_confirm {
+    width: calc(100% - 22px); /* Adjusted width to account for padding and border */
+}
+
+button {
+    width: 100%;
+    cursor: pointer;
+    background: #4ab3c6;
+    padding: 12px;
+    color: #fff;
+    font-size: 16px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    transition: background 0.2s ease-in-out;
+}
+
+button:hover {
+    background: #066a75;
+}
+
+.hidden {
+    display: none;
+}

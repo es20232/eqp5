@@ -52,7 +52,18 @@ body {
 }
 
 /* Estilo para os botões de edição de perfil */
-#editarPerfilBtn, .btn-like, .btn-excluir, .btn-primary {
+#editarPerfilBtn, .btn-primary {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 3px;
+    margin: 5px;
+    margin-right: auto;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.btn-like, .btn-excluir {
     background-color: #3498db;
     color: #fff;
     border: none;
@@ -73,13 +84,17 @@ body {
 
 /* Estilo para os botões de alternar entre posts e galeria */
 #mostrarGaleriaBtn, #mostrarPostsBtn {
-    background-color: #65027d;
+    background-color: #1b016b;
     color: #ffffffc2;
     border: none;
-    padding: 20px;
+    padding: 25px;
     margin: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    height: auto;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 #mostrarPostsBtn:hover, #mostrarGaleriaBtn:hover {
@@ -87,11 +102,21 @@ body {
 }
 
 /* Estilo para a galeria de fotos */
-.galeria-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 colunas */
-    gap: 20px; /* Espaçamento entre as imagens */
+/* Estilo para a galeria de fotos */
+.imagem-galeria, .interage-ft {
+    display: flex;
+    align-items: center;
+    /*grid-template-columns: repeat(3, 1fr); /* 3 colunas 
+    gap: 2px;  Espaçamento entre as imagens */
 }
+.galeria-container{
+    max-width: 950px; 
+    margin: 0 auto; /* Centraliza a div horizontalmente */
+    display: flex;
+    flex-wrap: wrap; /* Permite que os elementos flexíveis sejam quebrados em várias linhas */
+    justify-content: space-between; 
+}
+
 
 .imagem-galeria {
     position: relative;
@@ -99,11 +124,12 @@ body {
 }
 
 .imagem-galeria img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 5px;
+    width: calc((950px/ 3) - 10px); /* Calcula a largura das imagens para ocupar um terço da largura da div, com um espaçamento de 10px entre elas */
+    margin-bottom: 20px; /* Espaçamento entre as linhas */
+    box-sizing: border-box; 
+    object-fit: cover;
+    display: block;
 }
-
 .like-container {
     position: absolute;
     bottom: 0;
@@ -114,31 +140,47 @@ body {
     border-radius: 5px;
 }
 
-/* Estilo para os containers de posts */
-.posts-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-
-.post {
-    max-width: 200px; /* Defina o valor desejado */
-    max-height: 200px; /* Defina o valor desejado */
-    width: auto;
-    height: auto;
-    object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
-}
-
-.post img {
-    max-width: 300px; /* Defina o valor desejado */
-    max-height: 300px; /* Defina o valor desejado */
-    width: auto;
-    height: auto;
-    object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
-}
-
 .username {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
 }
+
+/* Estilo para os containers de posts */
+.posts-container {
+    max-width: 950px; 
+    margin: 0 auto; /* Centraliza a div horizontalmente */
+    display: flex;
+    flex-wrap: wrap; /* Permite que os elementos flexíveis sejam quebrados em várias linhas */
+    justify-content: space-between; 
+}
+
+.post {
+    max-width: 950px; /* Defina o valor desejado */
+    max-height: 100%; /* Defina o valor desejado */
+    /*display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;*/
+    cursor: pointer;
+    object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
+    overflow-x: hidden;
+    
+}
+
+.post img {
+    /*max-width: 100%;  Defina o valor desejado */
+    /*max-height: 100%;  Defina o valor desejado */
+    /*width: auto;
+    height: auto;
+    object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
+
+    width: calc((950px/ 3) - 10px); /* Calcula a largura das imagens para ocupar um terço da largura da div, com um espaçamento de 10px entre elas */
+    margin-bottom: 20px; /* Espaçamento entre as linhas */
+    box-sizing: border-box; 
+    object-fit: cover;
+    display: block;
+}
+
+
+

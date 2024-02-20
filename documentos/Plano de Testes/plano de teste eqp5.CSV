@@ -1,0 +1,16 @@
+ID;Caso de Teste;Tipos de Teste;Protótipo ;Resultado
+TU-1-C1;Verifica se a tabela de usuários é criada corretamente no banco de dados;UNITÁRIO;P1;OK
+TU-1-C2;Verifica se o método upload_perfil está adicionando a foto no perfil do usuário corretamente;UNITÁRIO;P1;OK
+TU-1-C3;Verifica se o método cadastro usuário está cadastrando usuários no BD corretamente;UNITÁRIO;P1;OK
+TU-2-C4;Verifica se o método salvar_Imagem_Galeria está salvando imagens no perfil do usuário;UNITÁRIO;P2;OK
+TU-2-C5;Verifica se a tabela de post é criada no banco de dados corretamente;UNITÁRIO;P2;OK
+TU-2-C6;Verifica se o método postar está cadastrando posts;UNITÁRIO;P2;OK
+TU-2-C7;Verifica se o método post__ está redirecionando para os posts para like e comentários;UNITÁRIO;P2;OK
+TU-2-C8;Verifica se o método excluir está excluindo a foto do banco de dados;UNITÁRIO;P2;OK
+TU-2-C9;Verifica se o método ___ está criando posts no Feed do usuário;UNITÁRIO;P2;OK
+TS-1-C10;Fluxo principal - Fluxo para logar com um usuário válido;Sistema;P1;OK
+TS-1-C11;Fluxo de exceção - Fluxo para logar com um usuário inválido;Sistema;P1;OK
+TS-1-C12;Fluxo principal - Fluxo para salvar uma imagem no Dashboard do usuário;Sistema;P1;OK
+TS-1-C13;Fluxo principal - Fluxo para visualizar um post;Sistema;P1;OK
+TS-1-C14;Fluxo principal - Fluxo para postar uma imagem no Feed do usuário;Sistema;P1;OK
+TS-1-C15;Verifica se está autenticando o usuário ao final do cadastro;Sistema;P1;OK

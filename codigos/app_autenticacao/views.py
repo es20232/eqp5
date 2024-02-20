@@ -60,23 +60,13 @@ def profile_view(request, username=None):
 
     photos = Photo.objects.filter(user=user)
     posts = Post.objects.filter(user=user).select_related('photo')
-    
-    liked_posts = [post.id for post in posts if request.user in post.likes.all()]
 
-    posts_count = Post.objects.filter(user=user).count()
-
-    context = {
-        'usuario': user, 
-        'form': form, 
-        'photo_form': photo_form, 
-        'post_form': post_form, 
-        'photos': photos, 
-        'posts': posts,
-        'posts_count': posts_count,
-        'liked_posts': liked_posts, 
-        'excluir_foto_url': reverse('excluir_foto', kwargs={'photo_id': 0}), 
+    context = {'usuario': user, 'form': form, 'photo_form': photo_form, 'post_form': post_form, 
+        'photos': photos, 'posts': posts, 'excluir_foto_url': reverse('excluir_foto', kwargs={'photo_id': 0}), 
     }
     return render(request, 'meu_app/perfil.html', context)
+
+
 
 @login_required
 def exibir_post(request, post_id):
@@ -91,6 +81,21 @@ def exibir_post(request, post_id):
             comentario.save()
             return redirect('exibir_post', post_id=post_id)
     return render(request, 'meu_app/post.html', {'post': post, 'form': form})
+
+@login_required
+def like_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    user = request.user
+
+    if user in post.likes.all():
+        post.likes.remove(user)
+        post.save()
+        
+    else:
+        post.likes.add(user)
+        post.save()
+
+    return redirect('exibir_post', post_id=post_id)
 
 @login_required
 def adicionar_comentario(request, post_id):

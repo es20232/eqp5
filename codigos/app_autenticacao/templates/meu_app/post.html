@@ -1,32 +1,89 @@
+<!-- esse html é o que é carregado ao entrar em post>escolher foto pra comentar>comentar -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ post }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_post.css' %}">
 </head>
 <body>
 
-    <h1>{{ post }}</h1>
-    <img src="{{ post.photo.image.url }}">
-    <p>{{ post.descricao }}</p>
+    <style>
+        .editar-btn a {
+            color: white;
+        }
+    </style>
+    <div class="comment-container">
+        <div class="content">
+            <div id="comment">
+                <button id="ed-btn" class="editar-btn">
+                    <a style="text-decoration: none;" href="{% url 'perfil' username=request.user.username %}">Perfil</a>
+                </button>
 
-    <form method="post" action="{% url 'adicionar_comentario' post.id %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Adicionar Comentário</button>
-    </form>
-    
-    <!-- Renderizar os comentários existentes -->
-    {% for comentario in post.comentarios.all %}
-        <div class="avatar-container">
-            {% if comentario.autor.photo %}
-                <img class="avatar" src="{{ comentario.autor.photo.url }}" alt="Avatar" style="margin-right: 10px;">
-            {% else %}
-                <div class="avatar no-photo"></div>
-            {% endif %}
+            <h1>@{{ post.user.username }}</h1>
+            <img src="{{ post.photo.image.url }}">
+            <p>{{ post.descricao }}</p>
+                <div class="container-likes">
+                    <form action="{% url 'like_post' post.id %}" method="POST"> {% csrf_token %}
+                        <button class="btn-like" onclick="likePhoto('{{ photo.id }}')">Like</button> {{ post.likes.count }}
+                    </form>
+                    
+                </div>
+                <form method="post" action="{% url 'adicionar_comentario' post.id %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <button id="ed-btn" class="editar-btn" type="submit">Adicionar Comentário </button>
+                </form>
+            </div>
+            {% for comentario in post.comentarios.all %}
+            <p>@{{ comentario.autor.username }}: {{ comentario.texto }} - {{ comentario.data_publicacao}}</p>
+
+            {% endfor %}
         </div>
-        <p>{{ comentario.autor.username }}: {{ comentario.texto }}</p>
-    {% endfor %}
+    </div>
+
+<script>
+        
+
+    // Dicionário para manter o controle de quais fotos cada usuário curtiu
+    var likes = {};
+
+    function likePhoto(photoId) {
+        // Verifica se o usuário já deu like nesta foto
+        if (likes[photoId]) {
+            // Se sim, remove o like
+            delete likes[photoId];
+        } else {
+            // Se não, verifica se o usuário já deu like em outra foto
+            for (var otherPhotoId in likes) {
+                if (likes.hasOwnProperty(otherPhotoId)) {
+                    // Se já deu like em outra foto, remove o like dessa foto
+                    delete likes[otherPhotoId];
+                }
+            }
+        // Adiciona o like na foto atual
+        likes[photoId] = true;
+        }
+
+        // Atualiza a contagem de likes na interface do usuário
+        updateLikesCount(photoId);
+    }
+
+    function updateLikesCount(photoId) {
+        // Obtém o elemento que exibe a contagem de likes
+        var likesCountElement = document.getElementById('likes-count-' + photoId);
+
+        // Obtém o número atual de likes
+        var likesCount = Object.keys(likes).length;
+
+        // Atualiza o texto para refletir o número atual de likes
+        likesCountElement.innerText = likesCount + (likesCount === 1 ? ' like' : ' likes');
+    }
+    
+</script>
+
 </body>
 </html>

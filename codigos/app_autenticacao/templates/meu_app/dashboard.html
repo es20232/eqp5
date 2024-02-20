@@ -4,35 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <style>
+        /* Estilo para o botão "Sair" e botão de perfil */
+        #logout-link, #perfil-link {
+            background-color: #007bff; /* Cor de fundo azul */
+            color: white; /* Cor do texto branca */
+            padding: 10px 20px; /* Preenchimento interno do botão */
+            border: none; /* Remova a borda */
+            border-radius: 5px; /* Cantos arredondados */
+            text-decoration: none; /* Remova o sublinhado */
+        }
+
+        /* Estilo para o botão "Buscar" */
+        button[type="submit"] {
+            background-color: #007bff; /* Cor de fundo azul */
+            color: white; /* Cor do texto branca */
+            padding: 10px 20px; /* Preenchimento interno do botão */
+            border: none; /* Remova a borda */
+            border-radius: 5px; /* Cantos arredondados */
+            cursor: pointer; /* Altere o cursor ao passar o mouse */
+        }
+
+        /* Estilo para a barra de pesquisa */
+        input[type="text"] {
+            padding: 10px 20px; /* Preenchimento interno do input */
+            border: 1px solid #000; /* Adicione uma borda preta */
+            border-radius: 5px; /* Cantos arredondados */
+            font-size: 16px; /* Tamanho da fonte */
+            margin-right: 10px; /* Margem direita para separar do botão de busca */
+        }
+
+        /* Estilo para a grade de imagens */
+        .image-grid {
+            display: grid;
+            grid-auto-flow: row; /* Exibe as imagens em uma coluna */
+            gap: 20px; /* Espaçamento entre as imagens */
+            justify-content: center; /* Centraliza as imagens horizontalmente */
+        }
+
+        /* Estilo para as imagens na grade */
+        .image-grid img {
+            width: 100%; /* Garanta que as imagens ocupem toda a largura do contêiner */
+            height: auto; /* Altura automática para manter a proporção */
+            max-width: 400px; /* Largura máxima da imagem */
+            border-radius: 5px; /* Cantos arredondados */
+        }
+
+        /* Estilo para a barra horizontal */
+        .horizontal-bar {
+            border-top: 1px solid #ccc; /* Adicione uma borda superior para simbolizar uma barra horizontal */
+            margin-top: 20px; /* Espaçamento entre a barra e os elementos acima */
+            margin-bottom: 20px; /* Espaçamento entre a barra e os elementos abaixo */
+        }
+
+        /* Estilo para a lista de perfis encontrados */
+        .perfil-list {
+            margin-top: 10px; /* Adicione margem superior menor para mover mais para cima */
+        }
+
+        /* Estilo para o contêiner dos botões de perfil e sair */
+        .buttons-container {
+            display: flex; /* Use flexbox para alinhar os botões */
+            justify-content: space-between; /* Alinha os botões ao longo do eixo principal com espaçamento entre eles */
+        }
+
+        /* Estilo para o corpo da página */
+        body {
+            background-color: rgba(0, 0, 0, 0.1); /* Cor de fundo com opacidade */
+            padding: 20px; /* Adiciona um espaçamento ao redor do conteúdo */
+        }
+    </style>
 </head>
 <body>
     {% csrf_token %}
-    <p>Bem-vindo, {{ usuario.username }}!</p>
+    <p>Olá, {{ user.username }}!</p>
 
-    <a href="{% url 'perfil' username=request.user.username %}">Perfil</a>
-    <a href="{% url 'logout' %}">sair</a>
-    
-    <div>
-        <form method="get" action="{% url 'dashboard' %}">
-            {% csrf_token %}
-            <input type="text" name="q" placeholder="Pesquisar">
-            <button type="submit">Buscar</button>
-        </form>
+    <div class="buttons-container">
+        <a href="{% url 'perfil' username=request.user.username %}" id="perfil-link">Perfil</a> <!-- Adicionado ID ao link de perfil -->
+        <a href="{% url 'logout' %}" id="logout-link">Sair</a> <!-- Adicione um ID ao botão "Sair" -->
     </div>
 
+    <div class="horizontal-bar"></div> <!-- Barra horizontal para separar visualmente -->
+
+    <form method="get" action="{% url 'dashboard' %}">
+        {% csrf_token %}
+        <input type="text" name="q" placeholder="Pesquisar">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <div class="horizontal-bar"></div> <!-- Nova barra horizontal para separar visualmente -->
+
     {% if results %}
-        <div>
+        <div class="perfil-list"> <!-- Adicionada classe para estilização -->
             {% for result in results %}
                 <li><a href="{% url 'perfil' username=result.username %}">{{ result.username }}</a></li>
             {% endfor %}
         </div>
     {% endif %}
-    
-    {% for post in postagens %}
-        {% if post.descricao and post.user != request.user %}
-            <img src="{{ post.photo.image.url }}" alt="User Photo">
-        {% endif %}
-    {% endfor %}
+
+    <div class="horizontal-bar"></div> <!-- Nova barra horizontal para separar visualmente -->
+
+    <div class="image-grid">
+        {% for post in postagens %}
+            {% if post.descricao and post.user != request.user %}
+                <img src="{{ post.photo.image.url }}" alt="User Photo">
+            {% endif %}
+        {% endfor %}
+    </div>
    
 </body>
 </html>

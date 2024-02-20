@@ -7,17 +7,18 @@
     <title>Perfil | @{{ usuario.username }}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_perfil.css' %}">
     <style>
-        .galeria-container img {
+        galeria-container img {
             max-width: 200px; /* Defina a largura máxima desejada para as imagens */
             max-height: 200px; /* Defina a altura máxima desejada para as imagens */
         }
     </style>
+
 </head>
 <body>
-    <div class="profile-container" style="display: flex; align-items: center;">
+    <div class="profile-container">
         <div class="avatar-container">
             {% if usuario.photo %}
-                <img class="avatar" src="{{ usuario.photo.url }}" alt="Avatar" style="margin-right: 10px;">
+                <img class="avatar" src="{{ usuario.photo.url }}" alt="Avatar">
             {% else %}
                 <div class="avatar no-photo"></div>
             {% endif %}
@@ -37,22 +38,22 @@
             {% if usuario.username %}
                 <h2 class="profile-user-name">{{ usuario.username }}</h2>
             {% endif %}
-            <h5 style="font-size: 15px;" class="profile-user-name">@{{usuario.username}}</h5>
+            <h5 class="profile-user-name">@{{usuario.username}}</h5>
 
-            <div class="profile-bio" style="margin-top:auto">
+            <div class="profile-bio">
                 {% if usuario.bio %}
                     <p><span class="profile-real-name"></span>◉ {{usuario.bio}}</p>
                 {% endif %}
             </div>
 
-            <div style="display: flex; justify-content: center; margin-bottom: 10px;">
+            <div>
                 <div id="editarPerfilBtn" {% if usuario == request.user %} onclick="mostrarFormEditarFotoPerfil()" {% endif %}>
                     {% if usuario == request.user %}
-                        <button class="btn btn-primary" type="submit" style="font-size: 15px;">Editar Foto de Perfil</button>
+                        <button class="btn btn-primary" type="submit" style="font-size: 15px;">Foto de Perfil</button>
                     {% endif %}
                 </div>
                 
-                <div style="margin-left: 10px; margin-top: 10px;">
+                <div>
                     {% if usuario == request.user %}
                         <a style="text-decoration: none; width:35%;" href="{% url 'editar_info' %}" class="btn btn-primary">Editar informações</a>
                     {% endif %}
@@ -63,7 +64,7 @@
         </div>
     </div>
     <br>
-
+    
     <div class="profile-user-settings" style="margin-left: 600px">
         <button class="btn btn-primary" id="mostrarPostsBtn" onclick="mostrarPosts()">Posts</button>
         {% if usuario == request.user %}
@@ -77,7 +78,7 @@
             <p><button type="submit">Adicionar foto na Galeria</button></p>
     </form>
 
-    <div class="galeria-container" id="galeria">
+    <div class="galeria-container" id="galeria" style="display: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
         {% for photo in photos %}
             {% if photo.image %}
                 <div class="imagem-galeria">
@@ -88,10 +89,6 @@
                     {% if usuario == photo.user %}
                     <button class="btn-excluir" onclick="excluirFoto('{{ photo.id }}')">Excluir</button>
                     {% endif %}
-                    <div class="like-container">
-                        <button class="btn-like" onclick="likePhoto('{{ photo.id }}')">Like</button>
-                        <span id="likes-count-{{ photo.id }}">0 likes</span>
-                    </div>
                 </div>
             {% endif %}
         {% endfor %}
@@ -101,14 +98,14 @@
     <br>
     <div class="posts-container" id="posts" style="display: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
         {% for post in posts %}
-            <div class="post" style="width: 100%; height: auto;">
-                {% if post.descricao %}
-                    <a href="{% url 'exibir_post' post.id %}">
-                        <img src="{{ post.photo.image.url }}">
-                    </a>
-                    <p>{{ post.descricao }}</p>
-                {% endif %}
-            </div>
+        <div class="post" style="width: 100%; height: auto;">
+            {% if post.descricao %}
+                <a href="{% url 'exibir_post' post.id %}" data-photo-id="{{ post.photo.id }}">
+                    <img src="{{ post.photo.image.url }}">
+                </a>
+                <p>{{ post.descricao }}</p>
+            {% endif %}
+        </div>
         {% endfor %}
     </div>
 
@@ -120,42 +117,6 @@
     </form>
 
     <script>
-        
-
-        // Dicionário para manter o controle de quais fotos cada usuário curtiu
-        var likes = {};
-
-        function likePhoto(photoId) {
-            // Verifica se o usuário já deu like nesta foto
-            if (likes[photoId]) {
-                // Se sim, remove o like
-                delete likes[photoId];
-            } else {
-                // Se não, verifica se o usuário já deu like em outra foto
-                for (var otherPhotoId in likes) {
-                    if (likes.hasOwnProperty(otherPhotoId)) {
-                        // Se já deu like em outra foto, remove o like dessa foto
-                        delete likes[otherPhotoId];
-                    }
-                }
-            // Adiciona o like na foto atual
-            likes[photoId] = true;
-            }
-
-            // Atualiza a contagem de likes na interface do usuário
-            updateLikesCount(photoId);
-        }
-
-        function updateLikesCount(photoId) {
-            // Obtém o elemento que exibe a contagem de likes
-            var likesCountElement = document.getElementById('likes-count-' + photoId);
-
-            // Obtém o número atual de likes
-            var likesCount = Object.keys(likes).length;
-
-            // Atualiza o texto para refletir o número atual de likes
-            likesCountElement.innerText = likesCount + (likesCount === 1 ? ' like' : ' likes');
-        }
 
             // Função para ocultar os posts e exibir a galeria ao carregar a página
         window.addEventListener('DOMContentLoaded', function() {

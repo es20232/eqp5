@@ -24,6 +24,7 @@ class Photo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='photos')
     image = models.ImageField(upload_to='user_gallery/', null=True, blank=True)
     publica = models.BooleanField(default=False) 
+    likes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"Photo {self.id} - {self.user.username}"
@@ -31,10 +32,9 @@ class Photo(models.Model):
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     descricao = models.TextField()
-    #photo = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True, blank=True)
-    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)  # Alteração aqui
-    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_posts', blank=True)
-
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)  
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='post_likes', blank=True)
+    
     def __str__(self):
         return f"Post {self.id} - {self.user.username}"
 
@@ -47,8 +47,3 @@ class Comentario(models.Model):
     def __str__(self):
         return f"Comentário por {self.autor.username} em {self.data_publicacao}"
 
-
-
-class Like(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
