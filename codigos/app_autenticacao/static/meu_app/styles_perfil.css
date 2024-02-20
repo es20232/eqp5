@@ -1,5 +1,5 @@
 /* Reset de estilos padrão do navegador para garantir consistência */
-body, h1, h2, h3, p, ul, li {
+body, h1, h2, h3,h5, p, ul, li {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -13,8 +13,18 @@ body {
     padding: 0;
 }
 
+a {
+    color: #fff; /* Define a cor da fonte para vermelho */
+    text-decoration: none; /* Remove o sublinhado padrão */
+}
+
+/* Estilo para o link quando estiver em hover (passando o mouse sobre ele) */
+a:hover {
+    color: #fff; /* Define a cor da fonte para azul quando o mouse estiver sobre o link */
+}
 .container{
     max-width: 950px;
+    max-height:100%;
     margin: auto;
     padding: 20px;
     background-color: #fff;
@@ -22,6 +32,7 @@ body {
     border-radius: 8px;
     margin-top: 50px;
     height: auto;
+    overflow:hidden;
 }
 /* Estilo para o container principal do perfil */
 .profile-container {
@@ -48,6 +59,8 @@ body {
     align-items: center;
     margin-left: 500px;
     margin-bottom: 50px;
+    color:#fff;
+    max-width: max-content;
 }
 
 .btn {
@@ -63,6 +76,9 @@ body {
 .editarInfo, #editarPerfilBtn{
     display: flex;
     align-items: center;
+    white-space: nowrap;
+    max-width: min-content;
+
 }
 
 /* Estilo para o avatar */
@@ -72,8 +88,8 @@ body {
 }
 
 .avatar {
-    max-width: 200px;
-    max-height: 180px;
+    max-width: 120px;
+    max-height: 120px;
     border-radius: 80%;
 }
 
@@ -146,12 +162,20 @@ body {
 }*/
 
 /* Estilo para a galeria de fotos */
-.galeria-container, .imagem-galeria, .interage-ft {
+.imagem-galeria, .interage-ft {
     display: flex;
     align-items: center;
     /*grid-template-columns: repeat(3, 1fr); /* 3 colunas 
     gap: 2px;  Espaçamento entre as imagens */
 }
+.galeria-container{
+    max-width: 950px; 
+    margin: 0 auto; /* Centraliza a div horizontalmente */
+    display: flex;
+    flex-wrap: wrap; /* Permite que os elementos flexíveis sejam quebrados em várias linhas */
+    justify-content: space-between; 
+}
+
 
 .imagem-galeria {
     position: relative;
@@ -159,9 +183,11 @@ body {
 }
 
 .imagem-galeria img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 5px;
+    width: calc((950px/ 3) - 10px); /* Calcula a largura das imagens para ocupar um terço da largura da div, com um espaçamento de 10px entre elas */
+    margin-bottom: 20px; /* Espaçamento entre as linhas */
+    box-sizing: border-box; 
+    object-fit: cover;
+    display: block;
 }
 
 #ed-btn{
@@ -174,10 +200,7 @@ body {
 }
 
 .like-container {
-    position: absolute;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
     background-color: rgba(255, 255, 255, 0.8);
     padding: 5px;
     border-radius: 5px;
@@ -185,29 +208,47 @@ body {
 
 /* Estilo para os containers de posts */
 .posts-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    max-width: 950px; 
+    margin: 0 auto; /* Centraliza a div horizontalmente */
+    display: flex;
+    flex-wrap: wrap; /* Permite que os elementos flexíveis sejam quebrados em várias linhas */
+    justify-content: space-between; 
 }
 
 .post {
-    max-width: 200px; /* Defina o valor desejado */
-    max-height: 200px; /* Defina o valor desejado */
-    width: auto;
-    height: auto;
+    max-width: 950px; /* Defina o valor desejado */
+    max-height: 100%; /* Defina o valor desejado */
+    /*display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;*/
+    cursor: pointer;
     object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
+    overflow-x: hidden;
+    
 }
 
 .post img {
-    max-width: 300px; /* Defina o valor desejado */
-    max-height: 300px; /* Defina o valor desejado */
-    width: auto;
+    /*max-width: 100%;  Defina o valor desejado */
+    /*max-height: 100%;  Defina o valor desejado */
+    /*width: auto;
     height: auto;
     object-fit: cover; /* Isso garante que a imagem mantenha sua proporção, mas preencha o contêiner */
+
+    width: calc((950px/ 3) - 10px); /* Calcula a largura das imagens para ocupar um terço da largura da div, com um espaçamento de 10px entre elas */
+    margin-bottom: 20px; /* Espaçamento entre as linhas */
+    box-sizing: border-box; 
+    object-fit: cover;
+    display: block;
 }
 
 .username {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
+}
+
+.postar-ft{
+    display: flex;
+    align-items: center;
 }

@@ -21,8 +21,8 @@
                 </button>
 
             <h1>@{{ post.user.username }}</h1>
-            <img src="{{ post.photo.image.url }}">
-            <p>{{ post.descricao }}</p>
+            <img src="{{ post.photo.image.url }}" style="max-width:100%; object-fit: cover;overflow-x: hidden;">
+            <p>{{ post.user.username }}: {{ post.descricao }}</p>
                 <form method="post" action="{% url 'adicionar_comentario' post.id %}">
                     {% csrf_token %}
                     {{ form.as_p }}
