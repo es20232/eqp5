@@ -13,12 +13,13 @@ from django.http import JsonResponse
 
 @login_required
 def dashboard_view(request):
-    postagens = Post.objects.exclude(photo__isnull=True)
+    postagens = Post.objects.exclude(photo__isnull=True).distinct
     query = request.GET.get('q')
     if query:
         results = Usuario.objects.filter(Q(username__icontains=query) | Q(nome__icontains=query))
     else:
         results = None  
+    
     return render(request, 'meu_app/dashboard.html', {'postagens': postagens, 'results': results})
 
 @login_required
@@ -60,19 +61,9 @@ def profile_view(request, username=None):
     photos = Photo.objects.filter(user=user)
     posts = Post.objects.filter(user=user).select_related('photo')
     
-    # Verificar quais posts o usuário curtiu
     liked_posts = [post.id for post in posts if request.user in post.likes.all()]
 
-    # Profile Stats -Rayanne
     posts_count = Post.objects.filter(user=user).count()
-    #following_count = Follow.objects.filter(follower=user).count()
-    #followers_count = Follow.objects.filter(following=user).count()
-    #follow_status = Follow.objects.filter(following=user, follower=request.user).exists()
-
-    # pagination -Rayanne
-    #paginator = Paginator(posts, 8)
-    #page_number = request.GET.get('page')
-    #posts_paginator = paginator.get_page(page_number)
 
     context = {
         'usuario': user, 
@@ -82,15 +73,11 @@ def profile_view(request, username=None):
         'photos': photos, 
         'posts': posts,
         'posts_count': posts_count,
-        'liked_posts': liked_posts,  # Adicionando a lista de posts curtidos pelo usuário
-        #'following_count': following_count,
-        #'followers_count': followers_count,
-        #'posts_paginator': posts_paginator,
-        #'follow_status': follow_status
-        'excluir_foto_url': reverse('excluir_foto', kwargs={'photo_id': 0}),  # Substitua '0' pelo valor apropriado
+        'liked_posts': liked_posts, 
+        'excluir_foto_url': reverse('excluir_foto', kwargs={'photo_id': 0}), 
     }
-
     return render(request, 'meu_app/perfil.html', context)
+
 @login_required
 def exibir_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)

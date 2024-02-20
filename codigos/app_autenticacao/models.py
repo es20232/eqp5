@@ -31,7 +31,8 @@ class Photo(models.Model):
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     descricao = models.TextField()
-    photo = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True, blank=True)
+    #photo = models.ForeignKey(Photo, on_delete=models.SET_NULL, null=True, blank=True)
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)  # Alteração aqui
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_posts', blank=True)
 
     def __str__(self):
