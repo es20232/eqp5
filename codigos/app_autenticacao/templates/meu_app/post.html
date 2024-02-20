@@ -1,32 +1,40 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ post }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'meu_app/styles_post.css' %}">
 </head>
 <body>
+    <style>
+        .editar-btn a {
+            color: white;
+        }
+    </style>
+    <div class="comment-container">
+        <div class="content">
+            <div id="comment">
+                <button id="ed-btn" class="editar-btn">
+                    <a style="text-decoration: none;" href="{% url 'perfil' username=request.user.username %}">Perfil</a>
+                </button>
 
-    <h1>{{ post }}</h1>
-    <img src="{{ post.photo.image.url }}">
-    <p>{{ post.descricao }}</p>
+            <h1>@{{ post.user.username }}</h1>
+            <img src="{{ post.photo.image.url }}">
+            <p>{{ post.descricao }}</p>
+                <form method="post" action="{% url 'adicionar_comentario' post.id %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
 
-    <form method="post" action="{% url 'adicionar_comentario' post.id %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Adicionar Comentário</button>
-    </form>
-    
-    <!-- Renderizar os comentários existentes -->
-    {% for comentario in post.comentarios.all %}
-        <div class="avatar-container">
-            {% if comentario.autor.photo %}
-                <img class="avatar" src="{{ comentario.autor.photo.url }}" alt="Avatar" style="margin-right: 10px;">
-            {% else %}
-                <div class="avatar no-photo"></div>
-            {% endif %}
+                    <button id="ed-btn" class="editar-btn" type="submit">Adicionar Comentário </button>
+                </form>
+            </div>
+            {% for comentario in post.comentarios.all %}
+            <p>@{{ comentario.autor.username }}: {{ comentario.texto }}</p>
+            {% endfor %}
         </div>
-        <p>{{ comentario.autor.username }}: {{ comentario.texto }}</p>
-    {% endfor %}
+    </div>
+    
 </body>
 </html>

@@ -1,0 +1,97 @@
+/* Reset de estilos padrão do navegador para garantir consistência */
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos gerais para o corpo da página */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #438086;
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    max-width: 950px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 50px;
+    height: auto;
+}
+
+.editarInfo, #editarPerfilBtn{
+    display: flex;
+    align-items: center;
+}
+
+
+/* Estilo para os botões de edição de perfil */
+#editarPerfilBtn, .btn-like, .btn-excluir, .btn-primary, .editar-btn {
+    background-color: #4ab3c6;
+    color: #fff;
+    border: none;
+    padding: 3px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+
+#editarPerfilBtn:hover, .btn-like:hover, .btn-excluir:hover, .btn-primary:hover {
+    background-color: #3498db;
+}
+
+.content {
+    width: 500px;
+    min-height: 560px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .comment-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 50px;
+    height: content;
+  }
+  
+  .comment-form {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .comment-form input {
+    margin-bottom: 10px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+    width: 90%;
+  }
+  
+  input[type="submit"] {
+    width: 40% !important;
+    cursor: pointer;
+    background: rgb(61, 157, 179);
+    padding: 8px 5px;
+    color: #fff;
+    font-size: 20px;
+    border: 1px solid #fff;
+    margin-bottom: 10px;
+    text-shadow: 0 1px 1px #333;
+    border-radius: 5px;
+    transition: all 0.2s linear;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
